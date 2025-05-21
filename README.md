@@ -1,3 +1,12 @@
+<p align="center">
+    <img src="https://capsule-render.vercel.app/api?type=waving&height=200&color=gradient&text=Vaultix%20Secure%20Document%20Management&fontAlignY=40&fontSize=40&fontColor=ffffff" alt="Vaultix Project Banner"/>
+</p>
+
+<p align="center">
+    <img src="https://img.shields.io/badge/Made%20With-Python-1f425f.svg?style=for-the-badge&logo=python&logoColor=white" alt="Made with Python"/>
+    <img src="https://img.shields.io/badge/Made%20With-Flask-000000.svg?style=for-the-badge&logo=flask&logoColor=white" alt="Made with Flask"/>
+</p>
+
 # Vaultix - Secure Document Management System
 
 Vaultix is a comprehensive, secure document management system designed to protect sensitive information through robust security features including encryption, digital signatures, access controls, and detailed audit logging. It provides a platform for users to upload, manage, sign, and verify documents while ensuring data integrity and compliance with various regulatory standards.
