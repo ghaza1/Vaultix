@@ -1,8 +1,3 @@
-Okay, I've updated the README.md for your Vaultix project to be more comprehensive, incorporating details from all the project files you've provided. I've also added the commands for generating SSL certificates and RSA public/private keys.
-
-Here is the updated `README.md`:
-
-```markdown
 # Vaultix - Secure Document Management System
 
 Vaultix is a comprehensive, secure document management system designed to protect sensitive information through robust security features including encryption, digital signatures, access controls, and detailed audit logging. It provides a platform for users to upload, manage, sign, and verify documents while ensuring data integrity and compliance with various regulatory standards.
