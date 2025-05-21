@@ -413,4 +413,16 @@ Contributions to Vaultix are welcome! Please follow these general guidelines:
 ## License
 
 This project is licensed under the MIT License. See the `LICENSE` file for details (assuming one would be added).
-```
+---
+
+## 📬 Connect with Me  
+
+<p align="center">
+    <a href="mailto:aghazal085@gmail.com">
+        <img src="https://img.shields.io/badge/Email-Contact%20Me-red?style=for-the-badge&logo=gmail&logoColor=white"/>
+    </a>
+    <a href="https://www.linkedin.com/in/ahmedghaza1" target="_blank">
+        <img src="https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin&logoColor=white"/>
+    </a>
+</p>  
+
