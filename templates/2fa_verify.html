@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Verify Two-Factor Authentication{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4>Two-Factor Authentication</h4>
+                </div>
+                <div class="card-body">
+                    <p class="lead">Please enter the verification code from your authenticator app to complete login.</p>
+                    
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="token" class="form-label">Authentication Code</label>
+                            <input type="text" class="form-control" id="token" name="token" required autofocus 
+                                   placeholder="Enter 6-digit code" pattern="[0-9]{6}" maxlength="6">
+                            <div class="form-text">Enter the 6-digit code from your authenticator app</div>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Verify</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <div class="text-center">
+                        <a href="{{ url_for('login') }}" class="text-decoration-none">Cancel and return to login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

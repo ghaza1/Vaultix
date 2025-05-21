@@ -1,0 +1,14 @@
+{% extends "error_base.html" %}
+
+{% block title %}500 Internal Server Error{% endblock %}
+
+{% block error_icon %}<i class="fas fa-bug"></i>{% endblock %}
+
+{% block error_code %}500{% endblock %}
+
+{% block error_message %}Internal Server Error{% endblock %}
+
+{% block error_description %}
+Something went wrong on our end. Our technical team has been notified.
+Please try again later or contact support if the problem persists.
+{% endblock %}

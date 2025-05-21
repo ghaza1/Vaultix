@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}My Profile - Vaultix{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-9 col-lg-7 col-xl-6">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h2 class="mb-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-person-circle me-2" viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                        </svg>
+                        My Profile
+                    </h2>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    <form method="POST" action="{{ url_for('profile') }}">
+                        <div class="mb-4">
+                            <label for="email" class="form-label fs-5">Email Address</label>
+                            {% if user.oauth_provider %}
+                                <input type="email" class="form-control form-control-lg" id="email" name="email" value="{{ user.email }}" readonly disabled>
+                                <div class="form-text">
+                                    Logged in via {{ user.oauth_provider.capitalize() }}. Email managed by provider.
+                                </div>
+                            {% else %}
+                                <input type="email" class="form-control form-control-lg" id="email" name="email" value="{{ user.email }}" required>
+                                <div class="form-text">
+                                    This email will be used for login and notifications.
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="name" class="form-label fs-5">Full Name</label>
+                            <input type="text" class="form-control form-control-lg" id="name" name="name" value="{{ user.name if user.name else '' }}" required>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label fs-5">Role</label>
+                            <input type="text" class="form-control form-control-lg" value="{{ user.role.capitalize() }}" readonly disabled>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fs-5">Joined On</label>
+                            <input type="text" class="form-control form-control-lg" value="{{ user.created_at.strftime('%B %d, %Y - %H:%M:%S UTC') if user.created_at else 'N/A' }}" readonly disabled>
+                        </div>
+                        
+                        <hr class="my-4">
+
+                        <h4 class="mb-3 fs-5 text-center text-muted">Security Settings</h4>
+                        
+                        {% if not user.oauth_provider %}
+                        <div class="mb-4 p-3 bg-light rounded-3">
+                            <label class="form-label d-block fs-6 fw-bold">Change Password</label>
+                            <div class="mt-2">
+                                <div class="mb-3">
+                                    <label for="current_password" class="form-label">Current Password</label>
+                                    <input type="password" class="form-control" id="current_password" name="current_password">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="new_password" class="form-label">New Password</label>
+                                    <input type="password" class="form-control" id="new_password" name="new_password">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirm_password" class="form-label">Confirm New Password</label>
+                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+                                </div>
+                                <div class="form-text mb-2">
+                                    Password must be at least 8 characters long and include a mix of letters, numbers, and special characters.
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        {# Conditional display of 2FA settings #}
+                        {% if show_app_2fa %} {# This variable is passed from the app.py profile route #}
+                        <div class="mb-4 p-3 bg-light rounded-3">
+                            <label class="form-label d-block fs-6">Application Two-Factor Authentication (2FA)</label>
+                            <div>
+                                {% if user.is_2fa_enabled %}
+                                    <span class="badge bg-success p-2 fs-6">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-shield-lock-fill me-1" viewBox="0 0 16 16">
+                                          <path fill-rule="evenodd" d="M8 0c-.993 0-1.75.504-2.268 1.156a4.4 4.4 0 0 0-1.956.61H2a1 1 0 0 0-1 1v3.093c0 3.288 2.592 6.134 6.36 7.538a1.07 1.07 0 0 0 .28 0C11.408 13.362 14 10.52 14 7.23V3a1 1 0 0 0-1-1h-.524a4.401 4.401 0 0 0-1.956-.61C9.75.504 8.993 0 8 0zm-.002 5.167a.5.5 0 0 1 .5-.5h.004a.5.5 0 0 1 .5.5v1.167a.5.5 0 0 1-1 0V5.167zM8 6.5a1 1 0 0 0-1 1V10a1 1 0 1 0 2 0V7.5a1 1 0 0 0-1-1z"/>
+                                        </svg>Enabled
+                                    </span>
+                                    {# Optionally, add a button to disable 2FA - requires more logic #}
+                                    {% else %}
+                                    <span class="badge bg-warning text-dark p-2 fs-6">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-shield-exclamation me-1" viewBox="0 0 16 16">
+                                          <path d="M5.338 1.59A5.002 5.002 0 0 0 8 1.5c.653.002 1.298.126 1.907.362C11.093 1.212 12.5 2.11 12.5 4.45V7.23c0 1.32-.336 2.503-1.022 3.512l-.008.016c-.737 1.06-1.945 1.96-3.47 2.456a1.07 1.07 0 0 1-.002 0A10.99 10.99 0 0 1 8 15c-.597 0-1.17-.054-1.733-.152a1.07 1.07 0 0 1-.002 0c-1.525-.496-2.733-1.396-3.47-2.456l-.008-.016A4.96 4.96 0 0 1 2.5 7.23V4.45c0-2.34 1.407-3.238 2.838-2.86zM8 0c-.993 0-1.75.504-2.268 1.156a4.4 4.4 0 0 0-1.956.61H2a1 1 0 0 0-1 1v3.093c0 3.288 2.592 6.134 6.36 7.538a1.07 1.07 0 0 0 .28 0C11.408 13.362 14 10.52 14 7.23V3a1 1 0 0 0-1-1h-.524a4.401 4.401 0 0 0-1.956-.61C9.75.504 8.993 0 8 0zM6.997 11.87c-.691 0-1.25-.465-1.25-1.037 0-.572.56-1.037 1.25-1.037.692 0 1.25.465 1.25 1.037 0 .572-.558 1.037-1.25 1.037zm.002-3.726H7v3.496h-.001A.5.5 0 0 1 7 11.14H6.5a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 .5-.5h.002a.5.5 0 0 1 .5.5v.001z"/>
+                                        </svg>Disabled
+                                    </span>
+                                    <a href="{{ url_for('setup_2fa') }}" class="btn btn-sm btn-outline-success ms-2 py-2">Enable App 2FA</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% elif user.oauth_provider %} {# Specifically check if user logged in via any OAuth provider #}
+                        <div class="mb-4 p-3 bg-light rounded-3">
+                            <label class="form-label d-block fs-6">Multi-Factor Authentication (MFA)</label>
+                             <span class="badge bg-info text-dark p-2 fs-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-shield-check me-1" viewBox="0 0 16 16">
+                                  <path d="M5.338 1.59A5.002 5.002 0 0 0 8 1.5c.653.002 1.298.126 1.907.362C11.093 1.212 12.5 2.11 12.5 4.45V7.23c0 1.32-.336 2.503-1.022 3.512l-.008.016c-.737 1.06-1.945 1.96-3.47 2.456a1.07 1.07 0 0 1-.002 0A10.99 10.99 0 0 1 8 15c-.597 0-1.17-.054-1.733-.152a1.07 1.07 0 0 1-.002 0c-1.525-.496-2.733-1.396-3.47-2.456l-.008-.016A4.96 4.96 0 0 1 2.5 7.23V4.45c0-2.34 1.407-3.238 2.838-2.86z"/>
+                                  <path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                </svg>
+                                Managed by {{ user.oauth_provider.capitalize() }}
+                            </span>
+                            <div class="form-text mt-1">Your Multi-Factor Authentication settings are managed through your {{ user.oauth_provider.capitalize() }} account.</div>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="d-grid mt-4 pt-3">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save-fill me-2" viewBox="0 0 16 16">
+                                  <path d="M8.5 1.5A1.5 1.5 0 0 1 10 0h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h6c-.314.418-.5.937-.5 1.5v7.793L6.354 9.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 11.293V1.5z"/>
+                                </svg>Update Profile
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-muted text-center py-3">
+                    <small>Last updated: {{ user.updated_at.strftime('%B %d, %Y - %H:%M:%S UTC') if user.updated_at else 'N/A' }}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

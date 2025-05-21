@@ -1,0 +1,190 @@
+{% extends "admin_panel.html" %}
+{% block title %}Document Management - Admin Panel{% endblock %}
+
+{% block admin_content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-light py-3">
+        <h4 class="mb-0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-file-earmark-text me-2" viewBox="0 0 16 16">
+                <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
+                <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+            </svg>
+            Document Management
+        </h4>
+    </div>
+    <div class="card-body">
+        <p class="text-muted small">Manage all documents in the system. As an admin, you can edit document names, view document details, and delete documents.</p>
+        
+        {% if documents %}
+        <div class="table-responsive mt-3">
+            <table class="table table-striped table-hover table-bordered align-middle" style="font-size: 0.9rem;">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" class="text-center">ID</th>
+                        <th scope="col">Document Name</th>
+                        <th scope="col">Owner</th>
+                        <th scope="col" class="text-center">File Type</th>
+                        <th scope="col" class="text-center">Size</th>
+                        <th scope="col" class="text-nowrap">Uploaded On</th>
+                        <th scope="col" class="text-center">Status</th>
+                        <th scope="col" class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for document in documents %}
+                    <tr>
+                        <td class="text-center">{{ document.id }}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <span>{{ document.filename }}</span>
+                                <button type="button" class="btn btn-sm btn-outline-primary ms-2 edit-document-btn" 
+                                        data-document-id="{{ document.id }}" 
+                                        data-document-name="{{ document.filename }}" 
+                                        data-bs-toggle="tooltip" 
+                                        title="Edit document name">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                        </td>
+                        <td>
+                            {% set owner = document.owner %}
+                            {% if owner %}
+                                {{ owner.email }} 
+                                {% if owner.name %}({{ owner.name }}){% endif %}
+                            {% else %}
+                                <span class="text-muted">Unknown</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <span class="badge bg-secondary">{{ document.filetype|upper }}</span>
+                        </td>
+                        <td class="text-center">
+                            {{ (document.filesize / 1024)|round(1) }} KB
+                        </td>
+                        <td class="text-nowrap">{{ document.created_at.strftime('%Y-%m-%d %H:%M') if document.created_at else 'N/A' }}</td>
+                        <td class="text-center">
+                            {% if document.is_verified %}
+                                <span class="badge bg-success">Verified</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Unverified</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group">
+                                <a href="{{ url_for('download_document', document_id=document.id) }}" class="btn btn-sm btn-primary" title="Download Document">
+                                    <i class="fas fa-download"></i>
+                                </a>
+                                <form method="POST" action="{{ url_for('delete_document', document_id=document.id) }}" class="d-inline delete-document-form">
+                                    <button type="submit" class="btn btn-sm btn-danger" title="Delete Document">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info mt-3 text-center py-4">
+            <h5 class="alert-heading">No Documents Found</h5>
+            <p>There are no documents in the system currently.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Document Name Edit Modal -->
+<div class="modal fade" id="editDocumentModal" tabindex="-1" aria-labelledby="editDocumentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="editDocumentModalLabel">
+                    <i class="fas fa-file-edit me-2"></i>Edit Document Name
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editDocumentForm" method="POST" action="">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="document_name" class="form-label fw-bold">Document Name</label>
+                        <input type="text" class="form-control form-control-lg" id="document_name" name="document_name" required>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{{ super() }}
+<script>
+jQuery(function($) {
+    'use strict';
+    
+    console.log('Admin documents page initialized');
+    
+    // Initialize Bootstrap modal
+    const editDocumentModal = new bootstrap.Modal(document.getElementById('editDocumentModal'));
+    const $editDocumentForm = $('#editDocumentForm');
+    const $documentNameInput = $('#document_name');
+    
+    // Handle edit document button clicks
+    $(document).on('click', '.edit-document-btn', function(e) {
+        e.preventDefault();
+        
+        const documentId = $(this).data('document-id');
+        const documentName = $(this).data('document-name');
+        
+        // Set form action and input value
+        $editDocumentForm.attr('action', `/admin/document/${documentId}/update_name`);
+        $documentNameInput.val(documentName);
+        
+        // Show the modal
+        editDocumentModal.show();
+        
+        // Focus the input field after a short delay
+        setTimeout(() => $documentNameInput.trigger('focus'), 500);
+    });
+    
+    // Handle form submission
+    $editDocumentForm.on('submit', function(e) {
+        e.preventDefault();
+        
+        const documentName = $documentNameInput.val().trim();
+        
+        // Validation
+        if (!documentName) {
+            alert('Document name cannot be empty');
+            $documentNameInput.trigger('focus');
+            return false;
+        }
+        
+        // Submit the form
+        this.submit();
+    });
+    
+    // Delete document confirmation
+    $(document).on('submit', '.delete-document-form', function(e) {
+        e.preventDefault();
+        
+        const documentName = $(this).closest('tr').find('td:nth-child(2) span').text().trim();
+        const confirmationMessage = `Are you sure you want to delete the document "${documentName}"? This action cannot be undone.`;
+        
+        if (confirm(confirmationMessage)) {
+            this.submit();
+        }
+    });
+});
+</script>
+{% endblock %}

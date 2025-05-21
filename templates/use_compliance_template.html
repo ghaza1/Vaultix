@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Apply Compliance Template{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-file-contract"></i> Apply Compliance Template to Document
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>Document Information</h5>
+                            <table class="table table-sm">
+                                <tr>
+                                    <th>Filename:</th>
+                                    <td>{{ document.filename }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Uploaded by:</th>
+                                    <td>{{ document.owner.email }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Upload date:</th>
+                                    <td>{{ document.upload_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>File size:</th>
+                                    <td>{{ document.filesize }} bytes</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Template Information</h5>
+                            <table class="table table-sm">
+                                <tr>
+                                    <th>Template Name:</th>
+                                    <td>{{ template.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Regulation Type:</th>
+                                    <td>{{ template.regulation_type }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Created by:</th>
+                                    <td>{{ template.creator.email }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Created on:</th>
+                                    <td>{{ template.created_at.strftime('%Y-%m-%d') }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <h5 class="mb-3">Required Compliance Information</h5>
+                    <p class="text-muted">Please provide the following information required by the {{ template.regulation_type }} compliance template:</p>
+
+                    <form method="POST" action="{{ url_for('use_compliance_template', template_id=template.id, document_id=document.id) }}">
+                        {% for field in required_fields %}
+                            <div class="mb-3">
+                                <label for="{{ field }}" class="form-label">{{ field }} <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="{{ field }}" name="{{ field }}" required>
+                                {% if field == 'Data Controller' %}
+                                    <small class="text-muted">The entity that determines the purposes and means of processing personal data</small>
+                                {% elif field == 'Processing Purpose' %}
+                                    <small class="text-muted">The specific reason for processing the personal data</small>
+                                {% elif field == 'Legal Basis' %}
+                                    <small class="text-muted">The lawful basis for processing (e.g., consent, contract, legal obligation)</small>
+                                {% elif field == 'Retention Period' %}
+                                    <small class="text-muted">How long the data will be kept (e.g., "5 years", "Until contract completion")</small>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="confirmCompliance" required>
+                            <label class="form-check-label" for="confirmCompliance">
+                                I confirm that this document complies with all {{ template.regulation_type }} requirements and the information provided is accurate.
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('documents_list') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back to Documents
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-check-circle"></i> Apply Compliance Template
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

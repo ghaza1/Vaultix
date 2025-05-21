@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Signature Certificate - {{ document.filename }}</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* DocHub-inspired color palette */
+            --color-primary: #4361ee;
+            --color-primary-hover: #3a56d4;
+            --color-primary-active: #2a3eb1;
+            --color-primary-subtle: #eef0ff;
+            --color-primary-border: #c7d0ff;
+            
+            --color-success: #2ecc71;
+            --color-success-hover: #27ae60;
+            --color-success-active: #219653;
+            --color-success-subtle: #e3fcef;
+            --color-success-border: #a7e9c3;
+            
+            --color-danger: #e74c3c;
+            --color-danger-hover: #c0392b;
+            --color-danger-active: #a33025;
+            --color-danger-subtle: #fee7e5;
+            --color-danger-border: #f5b8b3;
+            
+            --color-warning: #f39c12;
+            --color-warning-hover: #d35400;
+            --color-warning-active: #a04000;
+            --color-warning-subtle: #fff8e1;
+            --color-warning-border: #fde2b9;
+            
+            --color-text-primary: #1a1a2b;
+            --color-text-secondary: #4a4a5c;
+            --color-text-tertiary: #8a8a9c;
+            --color-text-placeholder: #bcbccc;
+            
+            --color-bg-canvas: #ffffff;
+            --color-bg-default: #f8f9fa;
+            --color-bg-subtle: #f5f6f8;
+            
+            --color-border-primary: #e9ecef;
+            --color-border-secondary: #f1f3f5;
+            
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.1);
+            
+            --border-radius-sm: 0.25rem;
+            --border-radius-md: 0.375rem;
+            --border-radius-lg: 0.5rem;
+            --border-radius-pill: 50rem;
+            
+            --font-family-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            font-family: var(--font-family-primary);
+            line-height: 1.6;
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-default);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+        
+        /* Decorative elements */
+        .decorative-shape {
+            position: absolute;
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .shape-1 {
+            top: 5%;
+            left: 5%;
+            width: 60px;
+            height: 60px;
+            background-color: var(--color-primary-subtle);
+            border-radius: 50%;
+        }
+        
+        .shape-2 {
+            bottom: 10%;
+            right: 5%;
+            width: 80px;
+            height: 80px;
+            background-color: var(--color-success-subtle);
+            border-radius: 50%;
+        }
+        
+        .certificate {
+            border: 1px solid var(--color-border-primary);
+            border-radius: var(--border-radius-lg);
+            padding: 40px;
+            position: relative;
+            background-color: var(--color-bg-canvas);
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 2rem;
+        }
+        
+        .certificate-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid var(--color-border-primary);
+            padding-bottom: 1.5rem;
+        }
+        
+        .certificate-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .certificate-subtitle {
+            font-size: 1.25rem;
+            color: var(--color-text-secondary);
+            font-weight: 500;
+        }
+        
+        .certificate-body {
+            margin-bottom: 2.5rem;
+        }
+        
+        .section {
+            margin-bottom: 2rem;
+            background-color: var(--color-bg-subtle);
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--color-border-primary);
+            padding-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 0.75rem;
+            color: var(--color-primary);
+        }
+        
+        .info-row {
+            display: flex;
+            margin-bottom: 0.75rem;
+            align-items: flex-start;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            width: 200px;
+            color: var(--color-text-secondary);
+        }
+        
+        .info-value {
+            flex: 1;
+            color: var(--color-text-primary);
+        }
+        .verification-result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .valid {
+            background-color: var(--color-success-subtle);
+            border: 1px solid var(--color-success-border);
+            color: var(--color-success);
+        }
+        
+        .invalid {
+            background-color: var(--color-danger-subtle);
+            border: 1px solid var(--color-danger-border);
+            color: var(--color-danger);
+        }
+        
+        .certificate-footer {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--color-text-tertiary);
+            border-top: 1px solid var(--color-border-primary);
+            padding-top: 1.5rem;
+        }
+        
+        .verification-details {
+            margin-top: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: var(--border-radius-md);
+            padding: 1rem;
+        }
+        
+        .verification-item {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .verification-label {
+            font-weight: 500;
+            margin-right: 0.5rem;
+            color: var(--color-text-secondary);
+        }
+        
+        .verification-status {
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            margin-right: 0.75rem;
+        }
+        
+        .verification-status i {
+            margin-right: 0.375rem;
+        }
+        
+        .status-valid {
+            color: var(--color-success);
+        }
+        
+        .status-invalid {
+            color: var(--color-danger);
+        }
+        .certificate-seal {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            width: 140px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            border: 2px solid var(--color-success);
+            border-radius: 50%;
+            background-color: var(--color-success-subtle);
+            opacity: 0.9;
+            transform: rotate(-15deg);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .certificate-seal-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-success);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .certificate-seal-icon {
+            font-size: 2rem;
+            color: var(--color-success);
+            margin-bottom: 0.5rem;
+        }
+        
+        .certificate-seal-date {
+            font-size: 0.75rem;
+            color: var(--color-success);
+            margin-top: 0.25rem;
+        }
+        
+        /* Buttons */
+        .btn-primary {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius-md);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--color-primary-hover);
+            border-color: var(--color-primary-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-secondary {
+            background-color: var(--color-bg-subtle);
+            border: 1px solid var(--color-border-primary);
+            color: var(--color-text-secondary);
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius-md);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 1rem;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--color-bg-default);
+            color: var(--color-text-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn i {
+            margin-right: 0.5rem;
+        }
+        
+        @media print {
+            body {
+                padding: 0;
+                background-color: white;
+            }
+            
+            .decorative-shape {
+                display: none;
+            }
+            
+            .certificate {
+                border: 1px solid #ddd;
+                box-shadow: none;
+                padding: 20px;
+            }
+            
+            .print-button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Decorative shapes -->
+    <div class="decorative-shape shape-1"></div>
+    <div class="decorative-shape shape-2"></div>
+    
+    <!-- Logo header -->
+    <div class="text-center mt-4 mb-5">
+        <a href="{{ url_for('login') }}" class="d-inline-block">
+            <h1 class="d-flex align-items-center justify-content-center">
+                <i class="fas fa-shield-alt me-2" style="color: var(--color-primary);"></i>
+                <span style="font-weight: 700; color: var(--color-text-primary);">Vaultix</span>
+            </h1>
+        </a>
+    </div>
+    
+    <div class="certificate">
+        <div class="certificate-header">
+            <h1 class="certificate-title">Digital Signature Certificate</h1>
+            <p class="certificate-subtitle">Document: {{ document.filename }}</p>
+        </div>
+
+        <div class="certificate-body">
+            <div class="section">
+                <h2 class="section-title"><i class="fas fa-file-alt"></i> Document Information</h2>
+                <div class="info-row">
+                    <div class="info-label">Document Name:</div>
+                    <div class="info-value">{{ document.filename }}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Document Type:</div>
+                    <div class="info-value">{{ document.file_type }}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Upload Date:</div>
+                    <div class="info-value">{{ document.upload_date.strftime('%Y-%m-%d %H:%M:%S UTC') }}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Original Hash:</div>
+                    <div class="info-value"><code class="p-1 bg-light rounded">{{ document.original_hash }}</code></div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Current Hash:</div>
+                    <div class="info-value"><code class="p-1 bg-light rounded">{{ current_hash }}</code></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title"><i class="fas fa-user-check"></i> Signer Information</h2>
+                <div class="info-row">
+                    <div class="info-label">Signer Name:</div>
+                    <div class="info-value">{{ signer.name }}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Signer Email:</div>
+                    <div class="info-value">{{ signer.email }}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Signer ID:</div>
+                    <div class="info-value">{{ signer.id }}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Approval Status:</div>
+                    <div class="info-value">
+                        <span class="badge badge-approved">Approved</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title"><i class="fas fa-signature"></i> Signature Information</h2>
+                <div class="info-row">
+                    <div class="info-label">Signature ID:</div>
+                    <div class="info-value">{{ signature.id }}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Signature Date:</div>
+                    <div class="info-value">{{ signature.signature_timestamp.strftime('%Y-%m-%d %H:%M:%S UTC') }}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Signature Method:</div>
+                    <div class="info-value">RSA Digital Signature (2048-bit)</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Verification Date:</div>
+                    <div class="info-value">{{ verification_date.strftime('%Y-%m-%d %H:%M:%S UTC') }}</div>
+                </div>
+            </div>
+
+            <div class="verification-result {% if is_valid %}valid{% else %}invalid{% endif %}">
+                <h2 style="margin-top: 0; display: flex; align-items: center;">
+                    {% if is_valid %}
+                    <i class="fas fa-check-circle me-2"></i> Verification Result: VALID
+                    {% else %}
+                    <i class="fas fa-times-circle me-2"></i> Verification Result: INVALID
+                    {% endif %}
+                </h2>
+                <p class="lead">
+                    {% if is_valid %}
+                    This document has been cryptographically verified. The signature is valid and the document has not been modified since signing.
+                    {% else %}
+                    This document verification has failed. Either the signature is invalid or the document has been modified since signing.
+                    {% endif %}
+                </p>
+                <div class="verification-details">
+                    <div class="verification-item">
+                        <span class="verification-label">Document Integrity:</span>
+                        <span class="verification-status {% if hash_valid %}status-valid{% else %}status-invalid{% endif %}">
+                            {% if hash_valid %}
+                            <i class="fas fa-check"></i> VERIFIED
+                            {% else %}
+                            <i class="fas fa-times"></i> FAILED
+                            {% endif %}
+                        </span>
+                        {% if hash_valid %}
+                        <span class="text-muted">(Document has not been modified since signing)</span>
+                        {% else %}
+                        <span class="text-muted">(Document has been modified since signing)</span>
+                        {% endif %}
+                    </div>
+                    <div class="verification-item">
+                        <span class="verification-label">Cryptographic Signature:</span>
+                        <span class="verification-status {% if crypto_valid %}status-valid{% else %}status-invalid{% endif %}">
+                            {% if crypto_valid %}
+                            <i class="fas fa-check"></i> VERIFIED
+                            {% else %}
+                            <i class="fas fa-times"></i> FAILED
+                            {% endif %}
+                        </span>
+                        {% if crypto_valid %}
+                        <span class="text-muted">(Signature matches signer's public key)</span>
+                        {% else %}
+                        <span class="text-muted">(Signature does not match signer's public key)</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="certificate-footer">
+            <p>This certificate was generated by Vaultix on {{ verification_date.strftime('%Y-%m-%d %H:%M:%S UTC') }}.</p>
+            <p>Certificate ID: {{ '%016x' % verification_date.timestamp()|int }}{{ '%08x' % signature.id }}</p>
+        </div>
+
+        {% if is_valid %}
+        <div class="certificate-seal">
+            <div class="certificate-seal-icon"><i class="fas fa-check-circle"></i></div>
+            <div class="certificate-seal-text">Verified</div>
+            <div class="certificate-seal-date">{{ verification_date.strftime('%d %b %Y') }}</div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="text-center mt-4 mb-5">
+        <button onclick="window.print()" class="btn btn-primary">
+            <i class="fas fa-print"></i> Print Certificate
+        </button>
+        <button onclick="window.history.back()" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+    </div>
+    
+    <!-- Bootstrap JS Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

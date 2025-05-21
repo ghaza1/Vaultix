@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Admin Dashboard</h1>
+    
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-users"></i> Pending User Approvals</h5>
+                </div>
+                <div class="card-body">
+                    <p>Review and approve new user registration requests.</p>
+                    <a href="{{ url_for('admin_user_approvals') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-user-check"></i> Manage User Approvals
+                        {% if pending_users_count %}
+                        <span class="badge bg-danger ms-2">{{ pending_users_count }}</span>
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-file-alt"></i> Pending Document Approvals</h5>
+                </div>
+                <div class="card-body">
+                    <p>Review and approve document uploads from users.</p>
+                    <a href="{{ url_for('admin_document_approvals') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-file-signature"></i> Manage Document Approvals
+                        {% if pending_documents_count %}
+                        <span class="badge bg-danger ms-2">{{ pending_documents_count }}</span>
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-user-shield"></i> User Management</h5>
+                </div>
+                <div class="card-body">
+                    <p>View and manage all users in the system.</p>
+                    <a href="{{ url_for('admin_users') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-users-cog"></i> Manage Users
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-chart-line"></i> System Statistics</h5>
+                </div>
+                <div class="card-body">
+                    <p>View system usage statistics and audit logs.</p>
+                    <a href="{{ url_for('admin_statistics') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-chart-bar"></i> View Statistics
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

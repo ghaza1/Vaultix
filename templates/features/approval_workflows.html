@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block title %}Approval Workflows - Vaultix{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="p-5 rounded-4 shadow-sm" style="background: var(--color-header-bg-gradient)">
+                <div class="container-fluid py-3">
+                    <h1 class="display-4 fw-bold text-white">Approval Workflows</h1>
+                    <p class="col-md-10 fs-5 text-white opacity-90">
+                        Streamline your document approval processes with configurable, secure workflows.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <h2 class="mb-4">Approval Workflow System</h2>
+                    
+                    <div class="mb-5">
+                        <h3><i class="fas fa-project-diagram text-primary me-2"></i>How It Works</h3>
+                        <p class="fs-5">Our approval workflow system provides a structured process for reviewing and approving both users and documents within your organization:</p>
+                        
+                        <div class="mt-4 position-relative">
+                            <div class="position-relative px-4">
+                                <div class="position-absolute h-100" style="width: 2px; background-color: var(--color-primary); left: 19px; top: 0;"></div>
+                                
+                                <div class="d-flex mb-4 position-relative">
+                                    <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; z-index: 1;">
+                                        <span class="text-white fw-bold">1</span>
+                                    </div>
+                                    <div class="ms-4">
+                                        <h4>Submission</h4>
+                                        <p>New users register or documents are uploaded to the system, automatically entering the approval queue with a "pending" status.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex mb-4 position-relative">
+                                    <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; z-index: 1;">
+                                        <span class="text-white fw-bold">2</span>
+                                    </div>
+                                    <div class="ms-4">
+                                        <h4>Review</h4>
+                                        <p>Administrators review pending items in the approval queue, examining details and verifying information for compliance and security.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex mb-4 position-relative">
+                                    <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; z-index: 1;">
+                                        <span class="text-white fw-bold">3</span>
+                                    </div>
+                                    <div class="ms-4">
+                                        <h4>Decision</h4>
+                                        <p>Administrators make an approval decision, either approving the item or rejecting it with a reason for the rejection.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex mb-4 position-relative">
+                                    <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; z-index: 1;">
+                                        <span class="text-white fw-bold">4</span>
+                                    </div>
+                                    <div class="ms-4">
+                                        <h4>Notification</h4>
+                                        <p>The system automatically notifies relevant users about the approval decision and next steps.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex position-relative">
+                                    <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; z-index: 1;">
+                                        <span class="text-white fw-bold">5</span>
+                                    </div>
+                                    <div class="ms-4">
+                                        <h4>Access Control</h4>
+                                        <p>Based on the approval status, the system grants or restricts access to the approved items, maintaining security and compliance.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4 mt-5">
+                        <h3><i class="fas fa-cogs text-primary me-2"></i>Key Features</h3>
+                        
+                        <div class="row mt-4">
+                            <div class="col-md-6 mb-4">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-user-check text-primary fa-2x"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h5>User Approval</h5>
+                                        <p>Control who can access your system by requiring administrator approval for new user registrations.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-file-signature text-primary fa-2x"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h5>Document Approval</h5>
+                                        <p>Ensure all documents meet your organization's standards before they become available in the system.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-history text-primary fa-2x"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h5>Audit Trail</h5>
+                                        <p>Complete record of all approval activities, including who approved what and when.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-comment-alt text-primary fa-2x"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h5>Rejection Feedback</h5>
+                                        <p>Provide detailed reasons for rejection to help users understand what needs to be corrected.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header" style="background: var(--color-primary); color: white; border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;">
+                    <h4 class="mb-0">Approval Dashboard</h4>
+                </div>
+                <div class="card-body">
+                    <p>Administrators can efficiently manage approvals through our dedicated dashboard.</p>
+                    <img src="https://via.placeholder.com/350x200" alt="Approval Dashboard Example" class="img-fluid rounded mb-3">
+                    <p>The dashboard provides:</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item border-0 d-flex align-items-center">
+                            <i class="fas fa-list text-primary me-3"></i>
+                            <span>Queue of pending approvals</span>
+                        </li>
+                        <li class="list-group-item border-0 d-flex align-items-center">
+                            <i class="fas fa-search text-primary me-3"></i>
+                            <span>Detailed item information</span>
+                        </li>
+                        <li class="list-group-item border-0 d-flex align-items-center">
+                            <i class="fas fa-check-double text-primary me-3"></i>
+                            <span>Batch approval capabilities</span>
+                        </li>
+                        <li class="list-group-item border-0 d-flex align-items-center">
+                            <i class="fas fa-chart-bar text-primary me-3"></i>
+                            <span>Approval statistics</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+          
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

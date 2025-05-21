@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Okta Configuration Check{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4>Okta Configuration Status</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <p>This page shows the current Okta configuration status. It is only visible to administrators.</p>
+                    </div>
+
+                    <h5 class="mt-4">Configuration Status</h5>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th style="width: 30%">Okta Domain</th>
+                                <td>
+                                    {% if config.okta_domain %}
+                                        <span class="text-success">✓</span> {{ config.okta_domain }}
+                                    {% else %}
+                                        <span class="text-danger">✗</span> Not configured
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Client ID</th>
+                                <td>
+                                    {% if config.client_id %}
+                                        <span class="text-success">✓</span> {{ config.client_id|truncate(10, True, '...') }}
+                                    {% else %}
+                                        <span class="text-danger">✗</span> Not configured
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Client Secret</th>
+                                <td>
+                                    {% if config.client_secret %}
+                                        <span class="text-success">✓</span> <em>(Set but not displayed)</em>
+                                    {% else %}
+                                        <span class="text-danger">✗</span> Not configured
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Server Metadata</th>
+                                <td>
+                                    {% if config.server_metadata %}
+                                        <span class="text-success">✓</span> Available
+                                    {% else %}
+                                        <span class="text-danger">✗</span> Not available
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Overall Status</th>
+                                <td>
+                                    {% if config.overall_status %}
+                                        <span class="badge bg-success">Ready</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Not Ready</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    {% if config.server_metadata %}
+                    <h5 class="mt-4">Server Metadata</h5>
+                    <div class="alert alert-secondary">
+                        <pre class="mb-0" style="white-space: pre-wrap;">{{ config.server_metadata_json }}</pre>
+                    </div>
+                    {% endif %}
+
+                    <h5 class="mt-4">Troubleshooting</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <strong>Check .env file:</strong> Make sure OKTA_DOMAIN, OKTA_CLIENT_ID, and OKTA_CLIENT_SECRET are properly set.
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Verify Okta/Auth0 Application:</strong> Ensure the application is properly configured in your Okta/Auth0 dashboard.
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Callback URL:</strong> Make sure the callback URL in Okta/Auth0 matches your application's callback URL.
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Restart Application:</strong> Try restarting the application after making configuration changes.
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url_for('admin_panel') }}" class="btn btn-secondary">Back to Admin Panel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

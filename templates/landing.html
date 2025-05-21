@@ -1,0 +1,284 @@
+{% extends "base.html" %}
+{% block title %}Vaultix - Secure Document Management{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <!-- Hero Section -->
+    <div class="position-relative">
+        <div class="position-absolute w-100 h-100" style="background: linear-gradient(135deg, rgba(30, 64, 175, 0.9) 0%, rgba(37, 99, 235, 0.8) 100%); z-index: 1;"></div>
+        <div class="position-absolute w-100 h-100" style="background-image: url('https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1567&q=80'); background-size: cover; background-position: center; filter: blur(1px); z-index: 0;"></div>
+        <div class="container position-relative py-5" style="z-index: 2;">
+            <div class="row min-vh-75 align-items-center">
+                <div class="col-lg-6 text-white">
+                    <h1 class="display-3 fw-bold mb-4">Secure Document Management with Data Integrity</h1>
+                    <p class="fs-4 mb-4 opacity-90">Protect your sensitive documents with industry-leading encryption, digital signatures, and tamper-proof audit trails.</p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="{{ url_for('signup') }}" class="btn btn-light btn-lg px-4 py-2">Get Started</a>
+                        <a href="#features" class="btn btn-outline-light btn-lg px-4 py-2">Learn More</a>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Features Section -->
+    <div id="features" class="py-5 bg-light">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Key Features</h2>
+                <p class="fs-5 text-muted">Comprehensive security and management for your sensitive documents</p>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Document Security -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="feature-icon bg-primary bg-gradient text-white mb-3 d-inline-flex align-items-center justify-content-center rounded-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-shield-alt fa-2x"></i>
+                            </div>
+                            <h3 class="fs-4 fw-bold">Document Security</h3>
+                            <p class="text-muted">Encryption protects your documents both in transit and at rest, ensuring only authorized users can access sensitive information.</p>
+                            <a href="{{ url_for('document_security') }}" class="btn btn-sm btn-outline-primary mt-2">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Digital Signatures -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="feature-icon bg-primary bg-gradient text-white mb-3 d-inline-flex align-items-center justify-content-center rounded-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-signature fa-2x"></i>
+                            </div>
+                            <h3 class="fs-4 fw-bold">Digital Signatures</h3>
+                            <p class="text-muted">Cryptographically secure signatures verify document authenticity and protect against tampering with non-repudiation capabilities.</p>
+                            <a href="{{ url_for('digital_signatures') }}" class="btn btn-sm btn-outline-primary mt-2">Learn More</a>
+                            <a href="{{ url_for('signature_demo') }}" class="btn btn-sm btn-primary mt-2 ms-2">Try Demo</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Compliance -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="feature-icon bg-primary bg-gradient text-white mb-3 d-inline-flex align-items-center justify-content-center rounded-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-balance-scale fa-2x"></i>
+                            </div>
+                            <h3 class="fs-4 fw-bold">Compliance</h3>
+                            <p class="text-muted">Meet regulatory requirements with built-in compliance features for GDPR, HIPAA, SOX, and other standards.</p>
+                            <a href="{{ url_for('compliance') }}" class="btn btn-sm btn-outline-primary mt-2">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Audit Logs -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="feature-icon bg-primary bg-gradient text-white mb-3 d-inline-flex align-items-center justify-content-center rounded-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-history fa-2x"></i>
+                            </div>
+                            <h3 class="fs-4 fw-bold">Audit Logs</h3>
+                            <p class="text-muted">Comprehensive activity tracking provides complete transparency and accountability for all document interactions.</p>
+                            <a href="{{ url_for('audit_logs') }}" class="btn btn-sm btn-outline-primary mt-2">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Approval Workflows -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="feature-icon bg-primary bg-gradient text-white mb-3 d-inline-flex align-items-center justify-content-center rounded-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-tasks fa-2x"></i>
+                            </div>
+                            <h3 class="fs-4 fw-bold">Approval Workflows</h3>
+                            <p class="text-muted">Streamline document and user approval processes with configurable workflows and automated notifications.</p>
+                            <a href="{{ url_for('approval_workflows') }}" class="btn btn-sm btn-outline-primary mt-2">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Document Verification -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="feature-icon bg-primary bg-gradient text-white mb-3 d-inline-flex align-items-center justify-content-center rounded-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-check-double fa-2x"></i>
+                            </div>
+                            <h3 class="fs-4 fw-bold">Document Verification</h3>
+                            <p class="text-muted">Verify document integrity and authenticity with our advanced verification system, even for encrypted documents.</p>
+                            <a href="{{ url_for('verification_demo') }}" class="btn btn-sm btn-primary mt-2">Try Demo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- How It Works Section -->
+    <div class="py-5">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">How It Works</h2>
+                <p class="fs-5 text-muted">Simple and secure document management in just a few steps</p>
+            </div>
+            
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6">
+                    <img src="https://cdn1.outreachmagazine.com/wp-content/uploads/2023/11/23_1107_LEADERSHIP_The-Question-Behind-the-Question_1021x640.jpg" alt="How It Works" class="img-fluid rounded-3 shadow">
+                </div>
+                <div class="col-lg-6">
+                    <div class="steps">
+                        <div class="step d-flex mb-4">
+                            <div class="step-number bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; flex-shrink: 0;">
+                                <span class="fw-bold">1</span>
+                            </div>
+                            <div>
+                                <h4>Upload Documents</h4>
+                                <p class="text-muted">Upload your documents to our secure platform. Files are automatically encrypted using AES-256 encryption.</p>
+                            </div>
+                        </div>
+                        <div class="step d-flex mb-4">
+                            <div class="step-number bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; flex-shrink: 0;">
+                                <span class="fw-bold">2</span>
+                            </div>
+                            <div>
+                                <h4>Sign Documents</h4>
+                                <p class="text-muted">Apply digital signatures to verify authenticity and ensure document integrity with cryptographic protection.</p>
+                            </div>
+                        </div>
+                        <div class="step d-flex mb-4">
+                            <div class="step-number bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; flex-shrink: 0;">
+                                <span class="fw-bold">3</span>
+                            </div>
+                            <div>
+                                <h4>Manage Access</h4>
+                                <p class="text-muted">Control who can view, edit, or sign your documents with granular permission settings.</p>
+                            </div>
+                        </div>
+                        <div class="step d-flex">
+                            <div class="step-number bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; flex-shrink: 0;">
+                                <span class="fw-bold">4</span>
+                            </div>
+                            <div>
+                                <h4>Verify & Audit</h4>
+                                <p class="text-muted">Verify document authenticity at any time and track all interactions with comprehensive audit logs.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Testimonials Section -->
+    <div class="py-5 bg-light">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">What Our Users Say</h2>
+                <p class="fs-5 text-muted">Trusted by organizations around the world</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                            <p class="fs-5 fst-italic mb-4">"Vaultix has transformed how we handle sensitive documents. The digital signature feature has streamlined our approval processes and saved us countless hours."</p>
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                    <span class="fw-bold">JD</span>
+                                </div>
+                                <div>
+                                    <h5 class="mb-0">John Doe</h5>
+                                    <p class="text-muted mb-0">CTO, TechCorp</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                            <p class="fs-5 fst-italic mb-4">"The compliance features have been a game-changer for our healthcare organization. We can now ensure HIPAA compliance with minimal effort."</p>
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                    <span class="fw-bold">JS</span>
+                                </div>
+                                <div>
+                                    <h5 class="mb-0">Jane Smith</h5>
+                                    <p class="text-muted mb-0">Compliance Officer, HealthFirst</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                            <p class="fs-5 fst-italic mb-4">"The audit logs and approval workflows have given us unprecedented visibility and control over our document processes."</p>
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                    <span class="fw-bold">RJ</span>
+                                </div>
+                                <div>
+                                    <h5 class="mb-0">Robert Johnson</h5>
+                                    <p class="text-muted mb-0">Director, Financial Services Inc.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- CTA Section -->
+    <div class="py-5" style="background: var(--color-header-bg-gradient)">
+        <div class="container py-5 text-center text-white">
+            <h2 class="display-5 fw-bold mb-4">Ready to Secure Your Documents?</h2>
+            <p class="fs-5 mb-5 opacity-90">Join thousands of organizations that trust Vaultix for their document security needs.</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{{ url_for('signup') }}" class="btn btn-light btn-lg px-4 py-2">Get Started</a>
+                <a href="{{ url_for('documentation') }}" class="btn btn-outline-light btn-lg px-4 py-2">Learn More</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-lift {
+        transition: transform 0.3s ease;
+    }
+    .hover-lift:hover {
+        transform: translateY(-5px);
+    }
+    .opacity-90 {
+        opacity: 0.9;
+    }
+</style>
+{% endblock %}

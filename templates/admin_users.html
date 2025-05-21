@@ -1,0 +1,271 @@
+{% extends "admin_panel.html" %} {# Extends the admin_panel for consistent layout #}
+{% block title %}User Management - Admin Panel{% endblock %}
+
+{% block admin_content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-light py-3">
+        <h4 class="mb-0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-people-fill me-2" viewBox="0 0 16 16">
+                <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
+                <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+            </svg>
+            User Management
+        </h4>
+    </div>
+    <div class="card-body">
+        <p class="text-muted small">Manage user accounts and their roles within the Vaultix system.</p>
+        
+        {% if users %}
+        <div class="table-responsive mt-3">
+            <table class="table table-striped table-hover table-bordered align-middle" style="font-size: 0.9rem;">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" class="text-center">ID</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Name</th>
+                        <th scope="col" class="text-center">Current Role</th>
+                        <th scope="col" class="text-center">Approval Status</th>
+                        <th scope="col" class="text-nowrap">Joined On</th>
+                        <th scope="col" style="min-width: 220px;" class="text-center">Change Role</th>
+                        <th scope="col" class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user_account in users %}
+                    <tr>
+                        <td class="text-center">{{ user_account.id }}</td>
+                        <td>{{ user_account.email }}</td>
+                        <td>
+                            <span>{{ user_account.name if user_account.name else 'N/A' }}</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge fs-6
+                                {% if user_account.role == 'admin' %}bg-danger{% elif user_account.role == 'user' %}bg-primary{% else %}bg-secondary{% endif %}">
+                                {{ user_account.role.capitalize() }}
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge fs-6
+                                {% if user_account.approval_status == 'approved' %}bg-success
+                                {% elif user_account.approval_status == 'pending' %}bg-warning text-dark
+                                {% elif user_account.approval_status == 'rejected' %}bg-danger
+                                {% else %}bg-secondary{% endif %}">
+                                {{ user_account.approval_status.capitalize() if user_account.approval_status else 'Pending' }}
+                            </span>
+                            {% if user_account.approval_status == 'rejected' and user_account.rejection_reason %}
+                                <button type="button" class="btn btn-sm btn-link p-0 ms-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ user_account.rejection_reason }}">
+                                    <i class="fas fa-info-circle"></i>
+                                </button>
+                            {% endif %}
+                        </td>
+                        <td class="text-nowrap">{{ user_account.created_at.strftime('%Y-%m-%d %H:%M') if user_account.created_at else 'N/A' }}</td>
+                        <td>
+                            {% if current_user.id != user_account.id %} {# Admin cannot change their own role this way #}
+                            <form method="POST" action="{{ url_for('admin_update_user_role', user_id=user_account.id) }}" class="d-flex align-items-center justify-content-center">
+                                <select name="role" class="form-select form-select-sm me-2" style="width: auto; max-width: 100px;">
+                                    <option value="user" {% if user_account.role == 'user' %}selected{% endif %}>User</option>
+                                    <option value="admin" {% if user_account.role == 'admin' %}selected{% endif %}>Admin</option>
+                                </select>
+                                <button type="submit" class="btn btn-sm btn-success text-nowrap">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill me-1" viewBox="0 0 16 16">
+                                      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                    </svg>Update
+                                </button>
+                            </form>
+                            {% else %}
+                            <small class="text-muted d-block text-center">(Cannot change own role)</small>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group">
+                                <!-- Simple Edit Button -->
+                                <a href="{{ url_for('admin_update_username', user_id=user_account.id) }}?edit=true" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                
+                                <!-- Delete User Button -->
+                                {% if current_user.id != user_account.id %} {# Admin cannot delete their own account #}
+                                <form method="POST" action="{{ url_for('admin_delete_user', user_id=user_account.id) }}" class="d-inline delete-user-form">
+                                    <button type="submit" class="btn btn-sm btn-danger" title="Delete User {{ user_account.email }}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                                {% else %}
+                                <button class="btn btn-sm btn-outline-secondary" disabled>
+                                    <i class="fas fa-ban"></i>
+                                </button>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info mt-3 text-center py-4">
+            <h5 class="alert-heading">No Users Found</h5>
+            <p>There are no other users in the system currently (besides yourself, if you are an admin).</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock admin_content %}
+
+<!-- Username Edit Modal -->
+<div class="modal fade" id="editUsernameModal" tabindex="-1" aria-labelledby="editUsernameModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="editUsernameModalLabel">
+                    <i class="fas fa-user-edit me-2"></i>Edit Username
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editUsernameForm" method="POST" action="">
+                <div class="modal-body">
+                    <div class="alert alert-warning small" role="alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Changing a username will update it across the entire system.
+                    </div>
+                    <div class="mb-3">
+                        <label for="username" class="form-label fw-bold">New Username</label>
+                        <input type="text" class="form-control form-control-lg" id="username" name="username" required 
+                               placeholder="Enter new username" autocomplete="off">
+                        <div class="form-text">Username must be unique and between 3-50 characters.</div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+{{ super() }}
+<script>
+// Simple function to prompt for username and submit the form
+function promptAndSubmit(userId, currentName) {
+    var newName = prompt('Enter new username for this user:', currentName);
+    if (newName !== null && newName.trim() !== '') {
+        // Set the value in the hidden input
+        document.getElementById('username_' + userId).value = newName.trim();
+        // Submit the form
+        document.getElementById('username_' + userId).form.submit();
+    }
+}
+
+// Wait for the document to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    'use strict';
+    
+    console.log('Admin users page initialized');
+    
+    // Get modal element
+    var modalElement = document.getElementById('editUsernameModal');
+    
+    // Initialize the modal
+    var editUsernameModal = new bootstrap.Modal(modalElement);
+    
+    // Setup event listeners for edit buttons
+    var editButtons = document.querySelectorAll('.edit-username-btn');
+    
+    editButtons.forEach(function(button) {
+        button.addEventListener('click', function(e) {
+            // Get user data from button attributes
+            var userId = this.getAttribute('data-user-id');
+            var username = this.getAttribute('data-username') || '';
+            
+            console.log('Edit button clicked for user ID:', userId, 'Current username:', username);
+            
+            // Set form action
+            var form = document.getElementById('editUsernameForm');
+            form.action = '/admin/user/' + userId + '/update_username';
+            
+            // Set username in input field
+            var usernameInput = document.getElementById('username');
+            usernameInput.value = username;
+            
+            // Focus the input field after modal is shown
+            modalElement.addEventListener('shown.bs.modal', function() {
+                usernameInput.focus();
+            }, { once: true });
+        });
+    });
+    
+    // Add event listener for modal shown event
+    modalElement.addEventListener('shown.bs.modal', function() {
+        console.log('Modal shown');
+    });
+    
+    // Add event listener for modal hidden event
+    modalElement.addEventListener('hidden.bs.modal', function() {
+        console.log('Modal hidden');
+    });
+    
+    // Handle form submission
+    var editUsernameForm = document.getElementById('editUsernameForm');
+    if (editUsernameForm) {
+        editUsernameForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            var usernameInput = document.getElementById('username');
+            var username = usernameInput.value.trim();
+            
+            // Validation
+            if (!username) {
+                alert('Username cannot be empty');
+                usernameInput.focus();
+                return false;
+            }
+            
+            if (username.length < 3 || username.length > 50) {
+                alert('Username must be between 3 and 50 characters');
+                usernameInput.focus();
+                usernameInput.select();
+                return false;
+            }
+            
+            console.log('Submitting form with username:', username);
+            
+            // Show loading indicator
+            var submitButton = this.querySelector('button[type="submit"]');
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+            }
+            
+            // Submit the form
+            this.submit();
+        });
+    } else {
+        console.error('Edit username form not found');
+    }
+    
+    // Delete user confirmation
+    var deleteUserForms = document.querySelectorAll('.delete-user-form');
+    deleteUserForms.forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            var row = this.closest('tr');
+            var userEmail = row ? (row.querySelector('td:nth-child(2)').textContent.trim() || 'this user') : 'this user';
+            var confirmationMessage = `Are you sure you want to delete the user "${userEmail}"? This action cannot be undone and will delete all their associated documents.`;
+            
+            if (!confirm(confirmationMessage)) {
+                e.preventDefault();
+            }
+        });
+    });
+});
+
+// Console log for debugging
+console.log('Admin users page script loaded successfully');
+</script>
+{% endblock %}

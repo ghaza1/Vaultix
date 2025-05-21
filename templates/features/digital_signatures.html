@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% block title %}Digital Signatures - Vaultix{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="p-5 rounded-4 shadow-sm" style="background: var(--color-header-bg-gradient)">
+                <div class="container-fluid py-3">
+                    <h1 class="display-4 fw-bold text-white">Digital Signatures</h1>
+                    <p class="col-md-10 fs-5 text-white opacity-90">
+                        Secure, legally binding signatures that verify document authenticity and protect against tampering.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <h2 class="mb-4">How Our Digital Signatures Work</h2>
+                    
+                    <div class="mb-4">
+                        <h3><i class="fas fa-signature text-primary me-2"></i>Cryptographic Security</h3>
+                        <p class="fs-5">Our digital signatures use RSA public-key cryptography to create a unique, tamper-evident seal on your documents. Each signature is mathematically linked to both the document content and the signer's identity.</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h3><i class="fas fa-check-double text-primary me-2"></i>Verification Process</h3>
+                        <p class="fs-5">When a document is signed, our system creates a hash of the document content and encrypts it with the signer's private key. Anyone with access to the document can verify its authenticity using the signer's public key.</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h3><i class="fas fa-user-check text-primary me-2"></i>Signer Authentication</h3>
+                        <p class="fs-5">Before signing, users must authenticate their identity through our secure login process, which can include two-factor authentication for additional security.</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h3><i class="fas fa-certificate text-primary me-2"></i>Digital Certificates</h3>
+                        <p class="fs-5">Each signature includes a digital certificate that contains information about the signer, timestamp, and verification status, providing a complete audit trail for every signed document.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h2 class="mb-4">Benefits of Digital Signatures</h2>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-shield-alt text-primary fa-2x"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5>Enhanced Security</h5>
+                                    <p>Cryptographically secure signatures that cannot be forged or tampered with.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-tachometer-alt text-primary fa-2x"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5>Increased Efficiency</h5>
+                                    <p>Sign documents instantly from anywhere, eliminating the need for printing and scanning.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-gavel text-primary fa-2x"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5>Legal Validity</h5>
+                                    <p>Compliant with e-signature laws and regulations worldwide.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-search text-primary fa-2x"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5>Audit Trail</h5>
+                                    <p>Complete record of who signed what and when, with verification status.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header" style="background: var(--color-primary); color: white; border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;">
+                    <h4 class="mb-0">Signature Process</h4>
+                </div>
+                <div class="card-body">
+                    <ol class="list-group list-group-numbered">
+                        <li class="list-group-item border-0 d-flex align-items-start">
+                            <div>
+                                <h5 class="mb-1">Upload Document</h5>
+                                <p class="mb-0">Upload the document you need signed to our secure platform.</p>
+                            </div>
+                        </li>
+                        <li class="list-group-item border-0 d-flex align-items-start">
+                            <div>
+                                <h5 class="mb-1">Authenticate Identity</h5>
+                                <p class="mb-0">Verify your identity through our secure login process.</p>
+                            </div>
+                        </li>
+                        <li class="list-group-item border-0 d-flex align-items-start">
+                            <div>
+                                <h5 class="mb-1">Sign Document</h5>
+                                <p class="mb-0">Apply your digital signature with a single click.</p>
+                            </div>
+                        </li>
+                        <li class="list-group-item border-0 d-flex align-items-start">
+                            <div>
+                                <h5 class="mb-1">Verification</h5>
+                                <p class="mb-0">The system verifies the signature and document integrity.</p>
+                            </div>
+                        </li>
+                        <li class="list-group-item border-0 d-flex align-items-start">
+                            <div>
+                                <h5 class="mb-1">Certificate Generation</h5>
+                                <p class="mb-0">A digital certificate is generated as proof of signature.</p>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm border-0">
+                <div class="card-header" style="background: var(--color-secondary); color: white; border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;">
+                    <h4 class="mb-0">Ready to Sign?</h4>
+                </div>
+                <div class="card-body">
+                    <p>Start signing your documents securely today with our digital signature solution.</p>
+                    <a href="{{ url_for('documents_list') }}" class="btn btn-primary w-100 mb-2">Sign a Document</a>
+                    <a href="{{ url_for('upload_document') }}" class="btn btn-outline-primary w-100">Upload New Document</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

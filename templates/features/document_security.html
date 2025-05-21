@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Document Security - Vaultix{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="p-5 rounded-4 shadow-sm" style="background: var(--color-header-bg-gradient)">
+                <div class="container-fluid py-3">
+                    <h1 class="display-4 fw-bold text-white">Document Security</h1>
+                    <p class="col-md-10 fs-5 text-white opacity-90">
+                        Protecting your sensitive documents with industry-leading encryption and security measures.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <h2 class="mb-4">How We Secure Your Documents</h2>
+                    
+                    <div class="mb-4">
+                        <h3><i class="fas fa-lock text-primary me-2"></i>End-to-End Encryption</h3>
+                        <p class="fs-5">All documents are encrypted using AES-256 encryption, ensuring that your sensitive information remains protected both in transit and at rest. Only authorized users with the proper credentials can access the decrypted contents.</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h3><i class="fas fa-fingerprint text-primary me-2"></i>Digital Signatures</h3>
+                        <p class="fs-5">Every document is digitally signed to verify its authenticity and ensure it hasn't been tampered with. Our system uses RSA cryptography to create unique signatures that can be verified at any time.</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h3><i class="fas fa-user-shield text-primary me-2"></i>Access Controls</h3>
+                        <p class="fs-5">Granular permission settings allow you to control exactly who can view, edit, or sign your documents. Our role-based access control ensures that only authorized personnel can interact with sensitive information.</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h3><i class="fas fa-history text-primary me-2"></i>Audit Logging</h3>
+                        <p class="fs-5">Comprehensive audit logs track all document activities, including uploads, downloads, views, and signature events. This creates an immutable record of all interactions with your documents.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h2 class="mb-4">Security Best Practices</h2>
+                    
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item border-0 ps-0">
+                            <h5><i class="fas fa-check-circle text-success me-2"></i>Enable Two-Factor Authentication</h5>
+                            <p>Add an extra layer of security to your account by enabling 2FA in your profile settings.</p>
+                        </li>
+                        <li class="list-group-item border-0 ps-0">
+                            <h5><i class="fas fa-check-circle text-success me-2"></i>Regularly Review Access Permissions</h5>
+                            <p>Periodically audit who has access to your documents and revoke unnecessary permissions.</p>
+                        </li>
+                        <li class="list-group-item border-0 ps-0">
+                            <h5><i class="fas fa-check-circle text-success me-2"></i>Monitor Audit Logs</h5>
+                            <p>Regularly check the audit logs for any suspicious activity related to your documents.</p>
+                        </li>
+                        <li class="list-group-item border-0 ps-0">
+                            <h5><i class="fas fa-check-circle text-success me-2"></i>Use Strong Passwords</h5>
+                            <p>Create unique, complex passwords for your account and change them periodically.</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 mb-4">
+          
+            
+            <div class="card shadow-sm border-0">
+                <div class="card-header" style="background: var(--color-secondary); color: white; border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;">
+                    <h4 class="mb-0">Need Help?</h4>
+                </div>
+                <div class="card-body">
+                    <p>Our security experts are available to help you configure the optimal security settings for your documents.</p>
+                    <a href="#" class="btn btn-primary w-100">Contact Support</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+{% block title %}API Reference - Vaultix{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="p-5 rounded-4 shadow-sm" style="background: var(--color-header-bg-gradient)">
+                <div class="container-fluid py-3">
+                    <h1 class="display-4 fw-bold text-white">API Reference</h1>
+                    <p class="col-md-10 fs-5 text-white opacity-90">
+                        Comprehensive documentation for integrating with the Vaultix platform.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <h2 class="mb-4">API Overview</h2>
+                    
+                    <div class="mb-4">
+                        <h3><i class="fas fa-plug text-primary me-2"></i>Introduction</h3>
+                        <p class="fs-5">The Vaultix API provides programmatic access to the platform's core functionality, allowing developers to integrate document security, digital signatures, and verification into their applications.</p>
+                        
+                        <div class="bg-light p-4 rounded-3 my-4">
+                            <h5><i class="fas fa-info-circle text-primary me-2"></i>API Base URL</h5>
+                            <div class="bg-dark text-light p-3 rounded">
+                                <code>https://api.vaultix.com/v1</code>
+                            </div>
+                        </div>
+                        
+                        <h4 class="mt-4">Authentication</h4>
+                        <p>All API requests require authentication using API keys. You can generate API keys in your account settings.</p>
+                        
+                        <div class="bg-light p-4 rounded-3 my-4">
+                            <h5><i class="fas fa-key text-primary me-2"></i>Authentication Header</h5>
+                            <div class="bg-dark text-light p-3 rounded">
+                                <code>Authorization: Bearer YOUR_API_KEY</code>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h3><i class="fas fa-code text-primary me-2"></i>API Endpoints</h3>
+                        
+                        <div class="accordion mt-4" id="apiEndpointsAccordion">
+                            <!-- Documents API -->
+                            <div class="accordion-item border-0 mb-3 shadow-sm">
+                                <h2 class="accordion-header" id="headingDocuments">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDocuments" aria-expanded="true" aria-controls="collapseDocuments">
+                                        <i class="fas fa-file-alt me-2 text-primary"></i> Documents API
+                                    </button>
+                                </h2>
+                                <div id="collapseDocuments" class="accordion-collapse collapse show" aria-labelledby="headingDocuments" data-bs-parent="#apiEndpointsAccordion">
+                                    <div class="accordion-body">
+                                        <div class="mb-4">
+                                            <h5>List Documents</h5>
+                                            <div class="bg-light p-3 rounded-3 mb-3">
+                                                <code>GET /documents</code>
+                                            </div>
+                                            <p>Retrieves a list of documents accessible to the authenticated user.</p>
+                                            <h6>Query Parameters:</h6>
+                                            <ul>
+                                                <li><code>limit</code> - Maximum number of documents to return (default: 20)</li>
+                                                <li><code>offset</code> - Number of documents to skip (default: 0)</li>
+                                                <li><code>sort</code> - Field to sort by (created_at, name, size)</li>
+                                                <li><code>order</code> - Sort order (asc, desc)</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="mb-4">
+                                            <h5>Upload Document</h5>
+                                            <div class="bg-light p-3 rounded-3 mb-3">
+                                                <code>POST /documents</code>
+                                            </div>
+                                            <p>Uploads a new document to the platform.</p>
+                                            <h6>Request Body:</h6>
+                                            <ul>
+                                                <li><code>file</code> - The document file (multipart/form-data)</li>
+                                                <li><code>name</code> - Document name</li>
+                                                <li><code>encrypt</code> - Whether to encrypt the document (boolean)</li>
+                                                <li><code>metadata</code> - Additional document metadata (JSON object)</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="mb-4">
+                                            <h5>Get Document</h5>
+                                            <div class="bg-light p-3 rounded-3 mb-3">
+                                                <code>GET /documents/{document_id}</code>
+                                            </div>
+                                            <p>Retrieves information about a specific document.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <h5>Delete Document</h5>
+                                            <div class="bg-light p-3 rounded-3 mb-3">
+                                                <code>DELETE /documents/{document_id}</code>
+                                            </div>
+                                            <p>Deletes a specific document.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Signatures API -->
+                            <div class="accordion-item border-0 mb-3 shadow-sm">
+                                <h2 class="accordion-header" id="headingSignatures">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSignatures" aria-expanded="false" aria-controls="collapseSignatures">
+                                        <i class="fas fa-signature me-2 text-primary"></i> Signatures API
+                                    </button>
+                                </h2>
+                                <div id="collapseSignatures" class="accordion-collapse collapse" aria-labelledby="headingSignatures" data-bs-parent="#apiEndpointsAccordion">
+                                    <div class="accordion-body">
+                                        <div class="mb-4">
+                                            <h5>Sign Document</h5>
+                                            <div class="bg-light p-3 rounded-3 mb-3">
+                                                <code>POST /documents/{document_id}/signatures</code>
+                                            </div>
+                                            <p>Creates a digital signature for a document.</p>
+                                        </div>
+                                        
+                                        <div class="mb-4">
+                                            <h5>List Signatures</h5>
+                                            <div class="bg-light p-3 rounded-3 mb-3">
+                                                <code>GET /documents/{document_id}/signatures</code>
+                                            </div>
+                                            <p>Retrieves all signatures for a specific document.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <h5>Verify Signature</h5>
+                                            <div class="bg-light p-3 rounded-3 mb-3">
+                                                <code>GET /signatures/{signature_id}/verify</code>
+                                            </div>
+                                            <p>Verifies the authenticity of a digital signature.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Users API -->
+                            <div class="accordion-item border-0 mb-3 shadow-sm">
+                                <h2 class="accordion-header" id="headingUsers">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
+                                        <i class="fas fa-users me-2 text-primary"></i> Users API
+                                    </button>
+                                </h2>
+                                <div id="collapseUsers" class="accordion-collapse collapse" aria-labelledby="headingUsers" data-bs-parent="#apiEndpointsAccordion">
+                                    <div class="accordion-body">
+                                        <div class="mb-4">
+                                            <h5>Get Current User</h5>
+                                            <div class="bg-light p-3 rounded-3 mb-3">
+                                                <code>GET /users/me</code>
+                                            </div>
+                                            <p>Retrieves information about the authenticated user.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <h5>List Users</h5>
+                                            <div class="bg-light p-3 rounded-3 mb-3">
+                                                <code>GET /users</code>
+                                            </div>
+                                            <p>Retrieves a list of users (admin only).</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Audit Logs API -->
+                            <div class="accordion-item border-0 shadow-sm">
+                                <h2 class="accordion-header" id="headingAuditLogs">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAuditLogs" aria-expanded="false" aria-controls="collapseAuditLogs">
+                                        <i class="fas fa-history me-2 text-primary"></i> Audit Logs API
+                                    </button>
+                                </h2>
+                                <div id="collapseAuditLogs" class="accordion-collapse collapse" aria-labelledby="headingAuditLogs" data-bs-parent="#apiEndpointsAccordion">
+                                    <div class="accordion-body">
+                                        <div>
+                                            <h5>Get Audit Logs</h5>
+                                            <div class="bg-light p-3 rounded-3 mb-3">
+                                                <code>GET /audit-logs</code>
+                                            </div>
+                                            <p>Retrieves audit logs for the organization (admin only).</p>
+                                            <h6>Query Parameters:</h6>
+                                            <ul>
+                                                <li><code>start_date</code> - Start date for logs (ISO 8601 format)</li>
+                                                <li><code>end_date</code> - End date for logs (ISO 8601 format)</li>
+                                                <li><code>user_id</code> - Filter logs by user ID</li>
+                                                <li><code>action_type</code> - Filter logs by action type</li>
+                                                <li><code>resource_type</code> - Filter logs by resource type</li>
+                                                <li><code>resource_id</code> - Filter logs by resource ID</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header" style="background: var(--color-primary); color: white; border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;">
+                    <h4 class="mb-0">API Resources</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item border-0 d-flex align-items-center">
+                            <i class="fas fa-book text-primary me-3 fa-lg"></i>
+                            <div>
+                                <h5 class="mb-1">Full API Documentation</h5>
+                                <p class="mb-0 small text-muted">Complete reference with examples</p>
+                            </div>
+                        </li>
+                        <li class="list-group-item border-0 d-flex align-items-center">
+                            <i class="fas fa-code text-primary me-3 fa-lg"></i>
+                            <div>
+                                <h5 class="mb-1">SDK Libraries</h5>
+                                <p class="mb-0 small text-muted">Client libraries for various languages</p>
+                            </div>
+                        </li>
+                        <li class="list-group-item border-0 d-flex align-items-center">
+                            <i class="fas fa-laptop-code text-primary me-3 fa-lg"></i>
+                            <div>
+                                <h5 class="mb-1">Code Examples</h5>
+                                <p class="mb-0 small text-muted">Sample integrations and use cases</p>
+                            </div>
+                        </li>
+                        <li class="list-group-item border-0 d-flex align-items-center">
+                            <i class="fas fa-tools text-primary me-3 fa-lg"></i>
+                            <div>
+                                <h5 class="mb-1">API Explorer</h5>
+                                <p class="mb-0 small text-muted">Interactive API testing tool</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm border-0">
+                <div class="card-header" style="background: var(--color-secondary); color: white; border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;">
+                    <h4 class="mb-0">Get API Access</h4>
+                </div>
+                <div class="card-body">
+                    <p>To start using the Vaultix API, you'll need to generate API keys in your account settings.</p>
+                    <a href="#" class="btn btn-primary w-100 mb-2">Generate API Keys</a>
+                    <p class="small text-muted mt-3">Need help with integration? Our developer support team is available to assist you.</p>
+                    <a href="#" class="btn btn-outline-primary w-100">Contact Developer Support</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

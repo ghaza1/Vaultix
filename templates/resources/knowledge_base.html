@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+{% block title %}Knowledge Base - Vaultix{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="p-5 rounded-4 shadow-sm" style="background: var(--color-header-bg-gradient)">
+                <div class="container-fluid py-3">
+                    <h1 class="display-4 fw-bold text-white">Knowledge Base</h1>
+                    <p class="col-md-10 fs-5 text-white opacity-90">
+                        Find answers to common questions and learn best practices for document security.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="mb-0">Frequently Asked Questions</h2>
+                        <div class="input-group" style="max-width: 300px;">
+                            <input type="text" class="form-control" placeholder="Search knowledge base...">
+                            <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion" id="faqAccordion">
+                        <!-- General Questions -->
+                        <div class="accordion-item border-0 mb-4 shadow-sm">
+                            <h2 class="accordion-header" id="headingGeneral">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGeneral" aria-expanded="true" aria-controls="collapseGeneral">
+                                    <i class="fas fa-question-circle me-2 text-primary"></i> General Questions
+                                </button>
+                            </h2>
+                            <div id="collapseGeneral" class="accordion-collapse collapse show" aria-labelledby="headingGeneral" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    <div class="mb-4">
+                                        <h5>What is Vaultix?</h5>
+                                        <p>Vaultix is a secure document management platform that provides advanced security features including encryption, digital signatures, and tamper-proof audit logs. It's designed to help organizations manage sensitive documents while maintaining compliance with various regulatory requirements.</p>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <h5>How secure is Vaultix?</h5>
+                                        <p>Vaultix employs industry-leading security measures including AES-256 encryption for documents, RSA cryptography for digital signatures, and secure authentication methods. All data is encrypted both in transit and at rest, and our systems undergo regular security audits and penetration testing.</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5>What file types are supported?</h5>
+                                        <p>Vaultix supports a wide range of document formats including PDF, Microsoft Office documents (Word, Excel, PowerPoint), text files, images, and more. The platform is designed to handle virtually any document type that might contain sensitive information.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Account Management -->
+                        <div class="accordion-item border-0 mb-4 shadow-sm">
+                            <h2 class="accordion-header" id="headingAccounts">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAccounts" aria-expanded="false" aria-controls="collapseAccounts">
+                                    <i class="fas fa-user-circle me-2 text-primary"></i> Account Management
+                                </button>
+                            </h2>
+                            <div id="collapseAccounts" class="accordion-collapse collapse" aria-labelledby="headingAccounts" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    <div class="mb-4">
+                                        <h5>How do I reset my password?</h5>
+                                        <p>To reset your password, click on the "Forgot Password" link on the login page. Enter your email address, and you'll receive a password reset link. Follow the instructions in the email to create a new password. If you're already logged in, you can change your password in your profile settings.</p>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <h5>What should I do if I lose my two-factor authentication device?</h5>
+                                        <p>If you lose access to your two-factor authentication device, you can use one of the backup codes that were provided when you set up 2FA. If you don't have your backup codes, contact your administrator or our support team to verify your identity and reset your 2FA settings.</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5>Can I change my email address?</h5>
+                                        <p>Yes, you can change your email address in your profile settings. After updating your email, you'll need to verify the new address by clicking on a confirmation link sent to that email. Until verified, your old email will continue to be your primary contact method.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Document Management -->
+                        <div class="accordion-item border-0 mb-4 shadow-sm">
+                            <h2 class="accordion-header" id="headingDocuments">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDocuments" aria-expanded="false" aria-controls="collapseDocuments">
+                                    <i class="fas fa-file-alt me-2 text-primary"></i> Document Management
+                                </button>
+                            </h2>
+                            <div id="collapseDocuments" class="accordion-collapse collapse" aria-labelledby="headingDocuments" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    <div class="mb-4">
+                                        <h5>What happens if I upload a document with the same name as an existing document?</h5>
+                                        <p>When you upload a document with the same name as an existing document, Vaultix will treat it as a new, separate document. Each document in the system has a unique identifier independent of its filename. However, to avoid confusion, we recommend using distinct filenames or organizing documents in different folders.</p>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <h5>Is there a size limit for uploaded documents?</h5>
+                                        <p>Yes, the default maximum file size for uploads is 100 MB per document. If you need to work with larger files, please contact your administrator or our support team to discuss options for increasing your file size limits.</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5>Can I recover deleted documents?</h5>
+                                        <p>Documents that have been deleted are moved to the Trash folder, where they remain for 30 days before being permanently deleted. During this 30-day period, you can restore documents from the Trash folder. After the 30-day period, documents are permanently deleted and cannot be recovered.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Digital Signatures -->
+                        <div class="accordion-item border-0 shadow-sm">
+                            <h2 class="accordion-header" id="headingSignatures">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSignatures" aria-expanded="false" aria-controls="collapseSignatures">
+                                    <i class="fas fa-signature me-2 text-primary"></i> Digital Signatures
+                                </button>
+                            </h2>
+                            <div id="collapseSignatures" class="accordion-collapse collapse" aria-labelledby="headingSignatures" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    <div class="mb-4">
+                                        <h5>Are digital signatures legally binding?</h5>
+                                        <p>Yes, digital signatures created in Vaultix are designed to be legally binding in most jurisdictions. They comply with major electronic signature laws such as ESIGN (USA), eIDAS (EU), and similar regulations in other countries. Each signature includes cryptographic proof of the signer's identity and the document's integrity.</p>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <h5>What information is included in a digital signature?</h5>
+                                        <p>A digital signature in Vaultix includes the signer's identity information (name, email), timestamp of when the signature was applied, the IP address from which the signature was created, and a cryptographic hash of the document that was signed. This information is encrypted and stored securely with the document.</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5>Can I sign a document on behalf of someone else?</h5>
+                                        <p>No, each user can only sign documents with their own identity. This ensures the integrity and non-repudiation aspects of digital signatures. However, administrators can set up delegation workflows where documents can be routed to specific individuals for their signatures.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header" style="background: var(--color-primary); color: white; border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;">
+                    <h4 class="mb-0">Popular Articles</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item border-0 d-flex align-items-center">
+                            <i class="fas fa-star text-warning me-3"></i>
+                            <a href="#" class="text-decoration-none">How to set up two-factor authentication</a>
+                        </li>
+                        <li class="list-group-item border-0 d-flex align-items-center">
+                            <i class="fas fa-star text-warning me-3"></i>
+                            <a href="#" class="text-decoration-none">Understanding document encryption</a>
+                        </li>
+                        <li class="list-group-item border-0 d-flex align-items-center">
+                            <i class="fas fa-star text-warning me-3"></i>
+                            <a href="#" class="text-decoration-none">Best practices for document security</a>
+                        </li>
+                        <li class="list-group-item border-0 d-flex align-items-center">
+                            <i class="fas fa-star text-warning me-3"></i>
+                            <a href="#" class="text-decoration-none">Troubleshooting signature verification issues</a>
+                        </li>
+                        <li class="list-group-item border-0 d-flex align-items-center">
+                            <i class="fas fa-star text-warning me-3"></i>
+                            <a href="#" class="text-decoration-none">Configuring approval workflows</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header" style="background: var(--color-secondary); color: white; border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;">
+                    <h4 class="mb-0">Categories</h4>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <a href="#" class="list-group-item list-group-item-action border-0 d-flex justify-content-between align-items-center">
+                            Getting Started
+                            <span class="badge bg-primary rounded-pill">12</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 d-flex justify-content-between align-items-center">
+                            Account Management
+                            <span class="badge bg-primary rounded-pill">8</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 d-flex justify-content-between align-items-center">
+                            Document Security
+                            <span class="badge bg-primary rounded-pill">15</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 d-flex justify-content-between align-items-center">
+                            Digital Signatures
+                            <span class="badge bg-primary rounded-pill">10</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 d-flex justify-content-between align-items-center">
+                            Compliance
+                            <span class="badge bg-primary rounded-pill">7</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 d-flex justify-content-between align-items-center">
+                            Troubleshooting
+                            <span class="badge bg-primary rounded-pill">14</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm border-0">
+                <div class="card-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;">
+                    <h4 class="mb-0">Need More Help?</h4>
+                </div>
+                <div class="card-body">
+                    <p>Can't find what you're looking for? Our support team is here to help.</p>
+                    <a href="#" class="btn btn-success w-100">Contact Support</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

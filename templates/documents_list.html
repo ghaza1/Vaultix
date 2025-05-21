@@ -1,0 +1,401 @@
+{% extends "base.html" %}
+{% block title %}My Documents - Vaultix{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4 mb-5 px-md-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+        <div>
+            <h2 class="mb-1 fs-3">{% if current_user.role == 'admin' %}All Documents{% else %}My Documents{% endif %}</h2>
+            <p class="text-muted mb-0">Manage your secure documents with integrity protection</p>
+        </div>
+        <div class="mt-3 mt-md-0">
+            <a href="{{ url_for('upload_document') }}" class="btn btn-primary">
+                <i class="fas fa-upload me-2"></i>Upload New Document
+            </a>
+        </div>
+    </div>
+
+    {% if documents %}
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center py-2">
+            <div>
+                <span class="text-muted">{{ documents|length }} document{% if documents|length != 1 %}s{% endif %}</span>
+            </div>
+            <div>
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" placeholder="Search documents..." id="documentSearch">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover mb-0 align-middle" id="documentsTable">
+                <thead>
+                    <tr>
+                        <th scope="col" class="ps-3">Document</th>
+                        <th scope="col" class="d-none d-md-table-cell">Type</th>
+                        <th scope="col" class="d-none d-md-table-cell">Status</th>
+                        <th scope="col" class="d-none d-lg-table-cell">Security</th>
+                        <th scope="col" class="d-none d-lg-table-cell">Upload Date</th>
+                        {% if current_user.role == 'admin' %}
+                        <th scope="col" class="d-none d-xl-table-cell">Owner</th>
+                        {% endif %}
+                        <th scope="col" class="text-end pe-3">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doc in documents %}
+                    <tr>
+                        <td class="ps-3">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="fas fa-file-alt fa-lg text-secondary"></i>
+                                </div>
+                                <div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="fw-medium text-truncate" style="max-width: 220px;" title="{{ doc.filename }}">{{ doc.filename }}</div>
+                                        {% if current_user.role == 'admin' or doc.user_id == current_user.id %}
+                                        <button type="button" class="btn btn-sm btn-link p-0 ms-2 edit-document-name-btn" 
+                                                data-document-id="{{ doc.id }}" 
+                                                data-document-name="{{ doc.filename }}"
+                                                data-update-url="{% if current_user.role == 'admin' %}{{ url_for('admin_update_document_name', document_id=doc.id) }}{% else %}{{ url_for('update_document_name', document_id=doc.id) }}{% endif %}">
+                                            <i class="fas fa-edit text-primary"></i>
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                    <div class="small text-muted">{{ (doc.filesize / 1024)|round(2) }} KB • SHA256: <code class="small">{{ doc.sha256_hash[:8] if doc.sha256_hash else 'N/A' }}...</code></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="d-none d-md-table-cell">
+                            <span class="badge bg-secondary">{{ doc.filetype.upper() if doc.filetype else 'N/A' }}</span>
+                        </td>
+                        <td class="d-none d-md-table-cell">
+                            {% if doc.approval_status == 'approved' %}
+                                <span class="badge bg-success"><i class="fas fa-check-circle me-1"></i>Approved</span>
+                                {% if doc.approval_date %}
+                                <div class="small text-muted mt-1">{{ doc.approval_date.strftime('%Y-%m-%d') }}</div>
+                                {% endif %}
+                            {% elif doc.approval_status == 'pending' %}
+                                <span class="badge bg-warning text-dark"><i class="fas fa-clock me-1"></i>Pending</span>
+                            {% elif doc.approval_status == 'rejected' %}
+                                <span class="badge bg-danger" title="{{ doc.rejection_reason }}"><i class="fas fa-times-circle me-1"></i>Rejected</span>
+                                {% if doc.rejection_reason %}
+                                <div class="small text-danger mt-1" style="max-width: 150px; overflow: hidden; text-overflow: ellipsis;" title="{{ doc.rejection_reason }}">{{ doc.rejection_reason }}</div>
+                                {% endif %}
+                            {% else %}
+                                <span class="badge bg-secondary">Unknown</span>
+                            {% endif %}
+                        </td>
+                        <td class="d-none d-lg-table-cell">
+                            <div class="d-flex">
+                                {% if doc.is_encrypted %}
+                                    <span class="badge bg-success me-1" title="AES-256 Encrypted"><i class="fas fa-lock"></i></span>
+                                {% endif %}
+                                {% if doc.digital_signature %}
+                                    <span class="badge bg-primary" title="Digitally Signed"><i class="fas fa-signature"></i></span>
+                                {% endif %}
+                                {% if not doc.is_encrypted and not doc.digital_signature %}
+                                    <span class="badge bg-light text-dark">None</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="d-none d-lg-table-cell">
+                            <span title="{{ doc.upload_date.strftime('%Y-%m-%d %H:%M:%S') }}">{{ doc.upload_date.strftime('%Y-%m-%d') }}</span>
+                        </td>
+                        {% if current_user.role == 'admin' %}
+                        <td class="d-none d-xl-table-cell">
+                            <span class="text-truncate d-inline-block" style="max-width: 150px;" title="{{ doc.owner.email }}">{{ doc.owner.email }}</span>
+                        </td>
+                        {% endif %}
+                        <td class="text-end pe-3">
+                            <div class="btn-group">
+                                {% if doc.approval_status == 'approved' %}
+                                <a href="{{ url_for('download_document', document_id=doc.id) }}" class="btn btn-sm btn-outline-secondary download-link" title="Download">
+                                    <i class="fas fa-download"></i>
+                                </a>
+                                <a href="{{ url_for('verify_document', document_id=doc.id) }}" class="btn btn-sm btn-outline-secondary" title="Verify Document">
+                                    <i class="fas fa-shield-alt"></i>
+                                </a>
+                                {% if doc.user_id == current_user.id %}
+                                <a href="{{ url_for('sign_document', document_id=doc.id) }}" class="btn btn-sm btn-outline-secondary" title="Sign Document (Only available to document owner)">
+                                    <i class="fas fa-signature"></i>
+                                </a>
+                                {% else %}
+                                <button class="btn btn-sm btn-outline-secondary" disabled title="Only the document owner can sign this document">
+                                    <i class="fas fa-signature"></i>
+                                </button>
+                                {% endif %}
+                                {% elif doc.approval_status == 'pending' %}
+                                <button class="btn btn-sm btn-outline-secondary" disabled title="Download (Pending Approval)">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary" disabled title="Verify (Pending Approval)">
+                                    <i class="fas fa-shield-alt"></i>
+                                </button>
+                                {% elif doc.approval_status == 'rejected' %}
+                                <button class="btn btn-sm btn-outline-secondary" disabled title="Download (Rejected)">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                                {% endif %}
+                                <form method="POST" action="{{ url_for('delete_document', document_id=doc.id) }}" style="display: inline;" class="delete-form">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Document">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="card border-0 text-center py-5">
+        <div class="card-body">
+            <div class="py-5">
+                <div class="mb-4">
+                    <i class="fas fa-file-upload fa-4x text-muted"></i>
+                </div>
+                <h3 class="fs-4 mb-3">No documents found</h3>
+                <p class="text-muted mb-4">You haven't uploaded any documents yet. Get started by uploading your first document.</p>
+                <a href="{{ url_for('upload_document') }}" class="btn btn-primary">
+                    <i class="fas fa-upload me-2"></i>Upload Your First Document
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Document search functionality
+    const searchInput = document.getElementById('documentSearch');
+    const documentsTable = document.getElementById('documentsTable');
+    
+    if (searchInput && documentsTable) {
+        searchInput.addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = documentsTable.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const documentName = row.querySelector('.fw-medium').textContent.toLowerCase();
+                const documentType = row.querySelector('.badge').textContent.toLowerCase();
+                const matchesSearch = documentName.includes(searchTerm) || documentType.includes(searchTerm);
+                
+                row.style.display = matchesSearch ? '' : 'none';
+            });
+            
+            // Show a message if no results found
+            const visibleRows = documentsTable.querySelectorAll('tbody tr:not([style*="display: none"])');
+            const noResultsRow = documentsTable.querySelector('.no-results-row');
+            
+            if (visibleRows.length === 0 && searchTerm !== '') {
+                if (!noResultsRow) {
+                    const tbody = documentsTable.querySelector('tbody');
+                    const newRow = document.createElement('tr');
+                    newRow.className = 'no-results-row';
+                    newRow.innerHTML = `<td colspan="${documentsTable.querySelectorAll('thead th').length}" class="text-center py-4">
+                        <div class="text-muted">No documents matching "${searchTerm}"</div>
+                    </td>`;
+                    tbody.appendChild(newRow);
+                } else {
+                    noResultsRow.querySelector('td div').textContent = `No documents matching "${searchTerm}"`;
+                    noResultsRow.style.display = '';
+                }
+            } else if (noResultsRow) {
+                noResultsRow.style.display = 'none';
+            }
+        });
+    }
+    
+    // JavaScript for download link flash messages
+    const downloadLinks = document.querySelectorAll('.download-link');
+    const flashMessageArea = document.getElementById('flash-message-area');
+
+    if (flashMessageArea) {
+        downloadLinks.forEach(link => {
+            link.addEventListener('click', function (event) {
+                setTimeout(function() {
+                    const fetchUrl = window.location.href.split('?')[0] + '?t=' + new Date().getTime();
+                    fetch(fetchUrl, { cache: 'no-store' })
+                        .then(response => {
+                            if (!response.ok) { throw new Error('Network response was not ok: ' + response.statusText); }
+                            return response.text();
+                        })
+                        .then(html => {
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, 'text/html');
+                            const newFlashMessagesContainer = doc.getElementById('flash-message-area');
+                            if (newFlashMessagesContainer) {
+                                flashMessageArea.innerHTML = newFlashMessagesContainer.innerHTML;
+                            } else {
+                                flashMessageArea.innerHTML = ''; 
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching flash messages:', error);
+                        });
+                }, 1000);
+            });
+        });
+    }
+
+    // JavaScript for delete confirmation with improved UX
+    const deleteForms = document.querySelectorAll('.delete-form');
+    deleteForms.forEach(form => {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Always prevent default first
+            
+            // Get the document name from the closest row
+            const row = this.closest('tr');
+            const documentName = row.querySelector('.fw-medium').textContent.trim();
+            
+            // Create a more user-friendly confirmation dialog
+            if (confirm(`Delete document: ${documentName}\n\nThis action cannot be undone. Are you sure?`)) {
+                // If confirmed, submit the form
+                this.submit();
+            }
+        });
+    });
+    
+    // Make table rows clickable for better mobile UX
+    const tableRows = documentsTable?.querySelectorAll('tbody tr');
+    tableRows?.forEach(row => {
+        row.addEventListener('click', function(event) {
+            // Only trigger if the click wasn't on a button or link
+            if (!event.target.closest('a') && !event.target.closest('button')) {
+                // On mobile, show a dropdown with actions
+                if (window.innerWidth < 768) {
+                    const actionsCell = this.querySelector('td:last-child');
+                    const actionButtons = actionsCell.querySelectorAll('.btn-group .btn');
+                    
+                    // Create a simple dropdown menu for actions
+                    const menu = document.createElement('div');
+                    menu.className = 'document-actions-menu';
+                    menu.style.position = 'fixed';
+                    menu.style.bottom = '0';
+                    menu.style.left = '0';
+                    menu.style.right = '0';
+                    menu.style.background = 'white';
+                    menu.style.padding = '1rem';
+                    menu.style.boxShadow = '0 -2px 10px rgba(0,0,0,0.1)';
+                    menu.style.zIndex = '1050';
+                    menu.style.borderRadius = '1rem 1rem 0 0';
+                    
+                    // Add document name as header
+                    const header = document.createElement('div');
+                    header.className = 'mb-3 d-flex justify-content-between align-items-center';
+                    header.innerHTML = `
+                        <h5 class="mb-0">${this.querySelector('.fw-medium').textContent}</h5>
+                        <button class="btn-close" aria-label="Close"></button>
+                    `;
+                    menu.appendChild(header);
+                    
+                    // Add buttons
+                    const buttonContainer = document.createElement('div');
+                    buttonContainer.className = 'd-grid gap-2';
+                    actionButtons.forEach(btn => {
+                        const newBtn = document.createElement('a');
+                        newBtn.href = btn.href || '#';
+                        newBtn.className = 'btn btn-lg ' + (btn.classList.contains('btn-outline-danger') ? 'btn-danger' : 'btn-outline-secondary');
+                        newBtn.innerHTML = btn.innerHTML;
+                        newBtn.title = btn.title;
+                        
+                        // Handle form submission for delete buttons
+                        if (!btn.href) {
+                            newBtn.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                const form = btn.closest('form');
+                                if (form && confirm(`Delete document: ${row.querySelector('.fw-medium').textContent.trim()}\n\nThis action cannot be undone. Are you sure?`)) {
+                                    form.submit();
+                                }
+                                document.body.removeChild(menu);
+                            });
+                        } else {
+                            newBtn.addEventListener('click', function() {
+                                document.body.removeChild(menu);
+                            });
+                        }
+                        
+                        buttonContainer.appendChild(newBtn);
+                    });
+                    menu.appendChild(buttonContainer);
+                    
+                    // Add close button functionality
+                    document.body.appendChild(menu);
+                    menu.querySelector('.btn-close').addEventListener('click', function() {
+                        document.body.removeChild(menu);
+                    });
+                    
+                    // Close when clicking outside
+                    document.addEventListener('click', function closeMenu(e) {
+                        if (!menu.contains(e.target) && document.body.contains(menu)) {
+                            document.body.removeChild(menu);
+                            document.removeEventListener('click', closeMenu);
+                        }
+                    });
+                }
+            }
+        });
+    });
+});
+</script>
+
+<!-- Document Name Edit Modal -->
+<div class="modal fade" id="editDocumentNameModal" tabindex="-1" aria-labelledby="editDocumentNameModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editDocumentNameModalLabel">Edit Document Name</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editDocumentNameForm" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="document_name" class="form-label">Document Name</label>
+                        <input type="text" class="form-control" id="document_name" name="document_name" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Document name edit functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the modal
+    const editDocumentNameModal = new bootstrap.Modal(document.getElementById('editDocumentNameModal'));
+    const editDocumentNameForm = document.getElementById('editDocumentNameForm');
+    const documentNameInput = document.getElementById('document_name');
+    
+    // Add click event listeners to all edit document name buttons
+    const editDocumentNameBtns = document.querySelectorAll('.edit-document-name-btn');
+    editDocumentNameBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const documentId = this.getAttribute('data-document-id');
+            const documentName = this.getAttribute('data-document-name');
+            const updateUrl = this.getAttribute('data-update-url');
+            
+            // Set the form action URL using the data attribute
+            editDocumentNameForm.action = updateUrl;
+            
+            // Set the current document name in the input field
+            documentNameInput.value = documentName;
+            
+            // Show the modal
+            editDocumentNameModal.show();
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "error_base.html" %}
+
+{% block title %}401 Unauthorized{% endblock %}
+
+{% block error_icon %}<i class="fas fa-lock"></i>{% endblock %}
+
+{% block error_code %}401{% endblock %}
+
+{% block error_message %}Unauthorized{% endblock %}
+
+{% block error_description %}
+You are not authorized to access this resource.
+Please log in or check your credentials and try again.
+{% endblock %}

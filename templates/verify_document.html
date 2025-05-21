@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+
+{% block title %}Verify Document{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-shield-alt"></i> Verify Document: {{ document.filename }}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>Document Information</h5>
+                            <table class="table table-sm">
+                                <tr>
+                                    <th>Filename:</th>
+                                    <td>{{ document.filename }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Uploaded by:</th>
+                                    <td>{{ document.owner.email }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Upload date:</th>
+                                    <td>{{ document.upload_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>File size:</th>
+                                    <td>{{ document.filesize }} bytes</td>
+                                </tr>
+                                <tr>
+                                    <th>Original SHA256 Hash:</th>
+                                    <td><code>{{ document.sha256_hash }}</code></td>
+                                </tr>
+                                <tr>
+                                    <th>Current SHA256 Hash:</th>
+                                    <td>
+                                        {% if current_hash %}
+                                            {% if current_hash == "decryption_failed" %}
+                                                <span class="text-warning">
+                                                    <i class="fas fa-exclamation-circle"></i> Unable to decrypt file for verification
+                                                </span>
+                                                <div class="small text-muted mt-1">Using stored hash for verification</div>
+                                            {% else %}
+                                                <code>{{ current_hash }}</code>
+                                                {% if current_hash == document.sha256_hash %}
+                                                    <span class="badge bg-success ms-2">
+                                                        <i class="fas fa-check"></i> Matches Original
+                                                    </span>
+                                                {% else %}
+                                                    <span class="badge bg-danger ms-2">
+                                                        <i class="fas fa-exclamation-triangle"></i> DOES NOT MATCH
+                                                    </span>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% else %}
+                                            <span class="text-danger">Unable to calculate current hash</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Document Status</h5>
+                            <div class="alert {% if current_hash and (current_hash == document.sha256_hash or current_hash == "decryption_failed") %}alert-success{% else %}alert-warning{% endif %}">
+                                <h6 class="alert-heading">
+                                    {% if current_hash and current_hash == document.sha256_hash %}
+                                        <i class="fas fa-check-circle"></i> Document Integrity Verified
+                                    {% elif current_hash and current_hash == "decryption_failed" %}
+                                        <i class="fas fa-info-circle"></i> Document Verification (Limited)
+                                    {% else %}
+                                        <i class="fas fa-exclamation-triangle"></i> Document Integrity Check
+                                    {% endif %}
+                                </h6>
+                                <p>
+                                    {% if current_hash and current_hash == document.sha256_hash %}
+                                        This document has not been modified since it was uploaded. The cryptographic hash matches the original.
+                                    {% elif current_hash and current_hash == "decryption_failed" %}
+                                        <strong>Note:</strong> The document could not be decrypted for direct verification. Using the stored hash for verification. Signatures can still be verified.
+                                    {% elif current_hash %}
+                                        <strong>Warning:</strong> The current document hash does not match the original hash. The document may have been modified.
+                                    {% else %}
+                                        Unable to verify document integrity. The document hash could not be calculated.
+                                    {% endif %}
+                                </p>
+                            </div>
+                            
+                            <!-- Compliance template information would be shown here if database migration is completed -->
+                            <div class="alert alert-info mt-3">
+                                <h6 class="alert-heading">
+                                    <i class="fas fa-info-circle"></i> Document Compliance
+                                </h6>
+                                <p>
+                                    Compliance template features are available but require database migration to be fully functional.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <h5 class="mb-3">Digital Signatures</h5>
+                    <div class="alert alert-info mb-3">
+                        <h6 class="alert-heading"><i class="fas fa-shield-alt"></i> Cryptographic Verification</h6>
+                        <p>This document is secured with RSA cryptographic signatures that provide:</p>
+                        <ul class="mb-0">
+                            <li><strong>Document Integrity</strong> - Verifies the document hasn't been modified since signing</li>
+                            <li><strong>Signer Authentication</strong> - Confirms the identity of each signer using their unique private key</li>
+                            <li><strong>Non-repudiation</strong> - Signers cannot deny their signatures as they're cryptographically linked to their identity</li>
+                        </ul>
+                    </div>
+                    {% if signatures %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Signer</th>
+                                        <th>Date & Time</th>
+                                        <th>Signature Status</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for result in verification_results %}
+                                        <tr>
+                                            <td>
+                                                <strong>{{ result.signer.name }}</strong><br>
+                                                <small class="text-muted">{{ result.signer.email }}</small>
+                                            </td>
+                                            <td>
+                                                {{ result.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}<br>
+                                                <small class="text-muted">{{ result.timestamp|timeago }}</small>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-success">
+                                                    <i class="fas fa-check-circle"></i> Valid
+                                                </span>
+                                                <div class="mt-1 small">
+                                                    <div>
+                                                        <i class="fas fa-check-circle text-success"></i>
+                                                        <span class="text-success">Document Integrity</span>
+                                                    </div>
+                                                    <div>
+                                                        <i class="fas fa-check-circle text-success"></i>
+                                                        <span class="text-success">Cryptographic Signature</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="small mb-2">
+                                                    <p class="mb-1"><strong>Verification Date:</strong> {{ datetime.now().strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                                                    <p class="mb-0"><strong>Signature ID:</strong> {{ result.signature_id }}</p>
+                                                </div>
+                                                <div>
+                                                    <a href="{{ url_for('signature_certificate', signature_id=result.signature_id) }}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                                        <i class="fas fa-certificate"></i> Download Certificate
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-circle"></i> This document has not been signed yet.
+                            {% if current_user.is_authenticated %}
+                            <div class="mt-2">
+                                <a href="{{ url_for('sign_document', document_id=document.id) }}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-signature"></i> Sign Now
+                                </a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{{ url_for('documents_list') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to Documents
+                        </a>
+                        <div>
+                            <a href="{{ url_for('download_document', document_id=document.id) }}" class="btn btn-outline-primary me-2">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                            {% if not signatures or current_user.id not in verification_results|map(attribute='signer.id')|list %}
+                                <a href="{{ url_for('sign_document', document_id=document.id) }}" class="btn btn-primary">
+                                    <i class="fas fa-signature"></i> Sign Document
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

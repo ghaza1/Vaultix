@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+
+{% block title %}Add Compliance Template{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-plus-circle"></i> Add New Compliance Template
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('add_compliance_template') }}" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Template Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="regulation_type" class="form-label">Regulation Type <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="regulation_type" name="regulation_type" required>
+                                        <option value="" selected disabled>Select a regulation type</option>
+                                        <option value="GDPR">GDPR - General Data Protection Regulation</option>
+                                        <option value="HIPAA">HIPAA - Health Insurance Portability and Accountability Act</option>
+                                        <option value="SOX">SOX - Sarbanes-Oxley Act</option>
+                                        <option value="ISO 27001">ISO 27001 - Information Security Management</option>
+                                        <option value="CCPA">CCPA - California Consumer Privacy Act</option>
+                                        <option value="PCI DSS">PCI DSS - Payment Card Industry Data Security Standard</option>
+                                        <option value="GLBA">GLBA - Gramm-Leach-Bliley Act</option>
+                                        <option value="FERPA">FERPA - Family Educational Rights and Privacy Act</option>
+                                        <option value="Other">Other (specify in description)</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="template_file" class="form-label">Template File <span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control" id="template_file" name="template_file" required>
+                                    <small class="text-muted">Upload a document template file (PDF, DOCX, etc.)</small>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                                    <small class="text-muted">Provide a brief description of this template and its purpose</small>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="required_fields" class="form-label">Required Fields <span class="text-danger">*</span></label>
+                                    <div class="border rounded p-3">
+                                        <div id="required_fields_container">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control required-field" placeholder="Field name">
+                                                <button type="button" class="btn btn-outline-danger remove-field">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="add_field">
+                                            <i class="fas fa-plus"></i> Add Field
+                                        </button>
+                                    </div>
+                                    <small class="text-muted">List all fields required by this compliance template</small>
+                                    <input type="hidden" name="required_fields" id="required_fields_json">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('admin_compliance_templates') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back to Templates
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save Template
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card shadow mt-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle"></i> Template Guidelines
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Best Practices for Compliance Templates</h6>
+                            <ul>
+                                <li>Include clear headers and sections</li>
+                                <li>Use consistent formatting</li>
+                                <li>Include placeholders for all required fields</li>
+                                <li>Add explanatory notes where needed</li>
+                                <li>Include version control information</li>
+                                <li>Add appropriate legal disclaimers</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Common Required Fields by Regulation</h6>
+                            <div class="accordion" id="accordionRegulations">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingGDPR">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGDPR" aria-expanded="false" aria-controls="collapseGDPR">
+                                            GDPR Fields
+                                        </button>
+                                    </h2>
+                                    <div id="collapseGDPR" class="accordion-collapse collapse" aria-labelledby="headingGDPR" data-bs-parent="#accordionRegulations">
+                                        <div class="accordion-body">
+                                            <ul class="list-unstyled">
+                                                <li><i class="fas fa-check-circle text-success me-2"></i> Data Controller Information</li>
+                                                <li><i class="fas fa-check-circle text-success me-2"></i> Purpose of Processing</li>
+                                                <li><i class="fas fa-check-circle text-success me-2"></i> Legal Basis for Processing</li>
+                                                <li><i class="fas fa-check-circle text-success me-2"></i> Data Retention Period</li>
+                                                <li><i class="fas fa-check-circle text-success me-2"></i> Data Subject Rights</li>
+                                                <li><i class="fas fa-check-circle text-success me-2"></i> Data Protection Officer Contact</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingHIPAA">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHIPAA" aria-expanded="false" aria-controls="collapseHIPAA">
+                                            HIPAA Fields
+                                        </button>
+                                    </h2>
+                                    <div id="collapseHIPAA" class="accordion-collapse collapse" aria-labelledby="headingHIPAA" data-bs-parent="#accordionRegulations">
+                                        <div class="accordion-body">
+                                            <ul class="list-unstyled">
+                                                <li><i class="fas fa-check-circle text-success me-2"></i> Covered Entity Information</li>
+                                                <li><i class="fas fa-check-circle text-success me-2"></i> PHI Usage Description</li>
+                                                <li><i class="fas fa-check-circle text-success me-2"></i> Patient Rights Statement</li>
+                                                <li><i class="fas fa-check-circle text-success me-2"></i> Privacy Officer Contact</li>
+                                                <li><i class="fas fa-check-circle text-success me-2"></i> Authorization Expiration</li>
+                                                <li><i class="fas fa-check-circle text-success me-2"></i> Revocation Procedure</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.getElementById('required_fields_container');
+        const addButton = document.getElementById('add_field');
+        const hiddenInput = document.getElementById('required_fields_json');
+        
+        // Add initial field if none exist
+        if (container.children.length === 0) {
+            addField();
+        }
+        
+        // Add field button
+        addButton.addEventListener('click', function() {
+            addField();
+        });
+        
+        // Remove field button
+        container.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-field') || e.target.parentElement.classList.contains('remove-field')) {
+                const button = e.target.classList.contains('remove-field') ? e.target : e.target.parentElement;
+                const fieldGroup = button.closest('.input-group');
+                
+                // Don't remove if it's the last field
+                if (container.children.length > 1) {
+                    fieldGroup.remove();
+                    updateRequiredFieldsJson();
+                }
+            }
+        });
+        
+        // Update on input change
+        container.addEventListener('input', function(e) {
+            if (e.target.classList.contains('required-field')) {
+                updateRequiredFieldsJson();
+            }
+        });
+        
+        // Form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            updateRequiredFieldsJson();
+            
+            // Validate that we have at least one field
+            const fields = JSON.parse(hiddenInput.value);
+            if (fields.length === 0) {
+                e.preventDefault();
+                alert('Please add at least one required field.');
+            }
+        });
+        
+        // Function to add a new field
+        function addField() {
+            const fieldGroup = document.createElement('div');
+            fieldGroup.className = 'input-group mb-2';
+            fieldGroup.innerHTML = `
+                <input type="text" class="form-control required-field" placeholder="Field name">
+                <button type="button" class="btn btn-outline-danger remove-field">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            container.appendChild(fieldGroup);
+            
+            // Focus the new input
+            const newInput = fieldGroup.querySelector('input');
+            newInput.focus();
+            
+            updateRequiredFieldsJson();
+        }
+        
+        // Function to update the hidden JSON input
+        function updateRequiredFieldsJson() {
+            const fields = [];
+            const inputs = container.querySelectorAll('.required-field');
+            
+            inputs.forEach(input => {
+                const value = input.value.trim();
+                if (value) {
+                    fields.push(value);
+                }
+            });
+            
+            hiddenInput.value = JSON.stringify(fields);
+        }
+        
+        // Initialize
+        updateRequiredFieldsJson();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% block title %}Audit Logs - Vaultix{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="p-5 rounded-4 shadow-sm" style="background: var(--color-header-bg-gradient)">
+                <div class="container-fluid py-3">
+                    <h1 class="display-4 fw-bold text-white">Audit Logs</h1>
+                    <p class="col-md-10 fs-5 text-white opacity-90">
+                        Comprehensive activity tracking for complete transparency and accountability.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <h2 class="mb-4">Comprehensive Audit Tracking</h2>
+                    
+                    <div class="mb-4">
+                        <h3><i class="fas fa-search-location text-primary me-2"></i>What We Track</h3>
+                        <p class="fs-5">Our audit logging system captures detailed information about every action taken within the platform, including:</p>
+                        
+                        <div class="row mt-4">
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100 bg-light">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="fas fa-file-upload me-2"></i>Document Activities</h5>
+                                        <ul class="list-unstyled mb-0">
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>Uploads</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>Downloads</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>Views</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>Modifications</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>Deletions</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100 bg-light">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="fas fa-signature me-2"></i>Signature Events</h5>
+                                        <ul class="list-unstyled mb-0">
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>Signature creation</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>Signature verification</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>Certificate generation</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>Verification failures</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100 bg-light">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="fas fa-user-shield me-2"></i>User Activities</h5>
+                                        <ul class="list-unstyled mb-0">
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>Login attempts</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>Password changes</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>Profile updates</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>Permission changes</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100 bg-light">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="fas fa-tasks me-2"></i>Administrative Actions</h5>
+                                        <ul class="list-unstyled mb-0">
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>User approvals</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>Document approvals</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>System configuration</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>Template management</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4 mt-5">
+                        <h3><i class="fas fa-shield-alt text-primary me-2"></i>Audit Log Security</h3>
+                        <p class="fs-5">Our audit logs are designed with security and integrity in mind:</p>
+                        
+                        <ul class="list-group list-group-flush mt-3">
+                            <li class="list-group-item border-0 ps-0">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-lock text-primary me-3 fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h5>Tamper-Proof Storage</h5>
+                                        <p>Audit logs are stored with cryptographic protections to prevent unauthorized modifications.</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item border-0 ps-0">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-history text-primary me-3 fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h5>Retention Policies</h5>
+                                        <p>Configurable retention periods ensure logs are kept for as long as required by your compliance needs.</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item border-0 ps-0">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-user-lock text-primary me-3 fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h5>Access Controls</h5>
+                                        <p>Only authorized administrators can access and export audit logs, with all access attempts themselves being logged.</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header" style="background: var(--color-primary); color: white; border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;">
+                    <h4 class="mb-0">Audit Log Features</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item border-0 d-flex align-items-center">
+                            <i class="fas fa-filter text-primary me-3 fa-lg"></i>
+                            <div>
+                                <h5 class="mb-1">Advanced Filtering</h5>
+                                <p class="mb-0">Filter logs by user, action type, date range, and more.</p>
+                            </div>
+                        </li>
+                        <li class="list-group-item border-0 d-flex align-items-center">
+                            <i class="fas fa-file-export text-primary me-3 fa-lg"></i>
+                            <div>
+                                <h5 class="mb-1">Export Capabilities</h5>
+                                <p class="mb-0">Export logs in various formats for reporting and analysis.</p>
+                            </div>
+                        </li>
+                        <li class="list-group-item border-0 d-flex align-items-center">
+                            <i class="fas fa-bell text-primary me-3 fa-lg"></i>
+                            <div>
+                                <h5 class="mb-1">Alert System</h5>
+                                <p class="mb-0">Set up alerts for suspicious or important activities.</p>
+                            </div>
+                        </li>
+                        <li class="list-group-item border-0 d-flex align-items-center">
+                            <i class="fas fa-chart-line text-primary me-3 fa-lg"></i>
+                            <div>
+                                <h5 class="mb-1">Activity Analytics</h5>
+                                <p class="mb-0">Visual reports and trends analysis of system usage.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+         
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

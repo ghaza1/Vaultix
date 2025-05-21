@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Login - Vaultix{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white text-center py-3">
+                <h2 class="mb-0">Login to Vaultix</h2>
+            </div>
+            <div class="card-body p-4 p-md-5">
+                <form method="POST" action="{{ url_for('login') }}">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" class="form-control form-control-lg" id="email" name="email" required autocomplete="email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control form-control-lg" id="password" name="password" required autocomplete="current-password">
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-lg">Login</button>
+                    </div>
+                </form>
+                <hr class="my-4">
+                <p class="text-center text-muted">Or log in using your corporate account:</p>
+                <div class="d-grid gap-2 mb-3">
+                    <a href="{{ url_for('okta_authlib_login') }}" class="btn btn-info text-white btn-lg"> 
+                        <svg width="24" height="24" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px; vertical-align: middle;">
+                            <circle cx="60" cy="60" r="50" fill="currentColor"/>
+                        </svg>
+                        Login with Okta/Auth0
+                    </a>
+                </div>
+                <p class="text-center mt-4">Don't have an account? <a href="{{ url_for('signup') }}">Sign Up</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

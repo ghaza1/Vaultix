@@ -1,0 +1,19 @@
+{% extends "error_base.html" %}
+
+{% block title %}Authentication Error{% endblock %}
+
+{% block error_code %}Auth Error{% endblock %}
+
+{% block error_message %}Okta Authentication Failed{% endblock %}
+
+{% block error_description %}
+There was a problem with your Okta authentication.
+This could be due to:
+<ul class="text-start mx-auto" style="max-width: 500px;">
+    <li>Incorrect Okta configuration settings</li>
+    <li>Expired or invalid authentication session</li>
+    <li>Network connectivity issues</li>
+    <li>Permissions issues with your Okta account</li>
+</ul>
+<p class="mt-3">Please try again or contact your system administrator.</p>
+{% endblock %}

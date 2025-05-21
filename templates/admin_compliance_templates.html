@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+
+{% block title %}Compliance Templates Management{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <i class="fas fa-file-contract"></i> Compliance Templates
+                    </h4>
+                    <a href="{{ url_for('add_compliance_template') }}" class="btn btn-light">
+                        <i class="fas fa-plus"></i> Add New Template
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if templates %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Regulation Type</th>
+                                        <th>Created By</th>
+                                        <th>Created On</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for template in templates %}
+                                        <tr>
+                                            <td>
+                                                <strong>{{ template.name }}</strong>
+                                                {% if template.description %}
+                                                    <br>
+                                                    <small class="text-muted">{{ template.description }}</small>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ template.regulation_type }}</td>
+                                            <td>{{ template.creator.email }}</td>
+                                            <td>{{ template.created_at.strftime('%Y-%m-%d') }}</td>
+                                            <td>
+                                                {% if template.is_active %}
+                                                    <span class="badge bg-success">Active</span>
+                                                {% else %}
+                                                    <span class="badge bg-secondary">Inactive</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-outline-primary view-template" data-template-id="{{ template.id }}">
+                                                        <i class="fas fa-eye"></i> View
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary toggle-status" data-template-id="{{ template.id }}" data-status="{{ template.is_active }}">
+                                                        {% if template.is_active %}
+                                                            <i class="fas fa-toggle-off"></i> Deactivate
+                                                        {% else %}
+                                                            <i class="fas fa-toggle-on"></i> Activate
+                                                        {% endif %}
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> No compliance templates have been created yet. 
+                            <a href="{{ url_for('add_compliance_template') }}" class="alert-link">Create your first template</a>.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="card shadow mt-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle"></i> About Compliance Templates
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p>Compliance templates help ensure that documents meet specific regulatory requirements. These templates can be used to:</p>
+                    <ul>
+                        <li>Standardize document formats across your organization</li>
+                        <li>Ensure all required fields for compliance are included</li>
+                        <li>Simplify the process of creating compliant documents</li>
+                        <li>Reduce the risk of non-compliance penalties</li>
+                    </ul>
+                    
+                    <h6 class="mt-3">Supported Regulations:</h6>
+                    <div class="row">
+                        <div class="col-md-3 mb-2">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6>GDPR</h6>
+                                    <small class="text-muted">European data protection and privacy</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6>HIPAA</h6>
+                                    <small class="text-muted">Healthcare information privacy</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6>SOX</h6>
+                                    <small class="text-muted">Financial reporting and disclosures</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6>ISO 27001</h6>
+                                    <small class="text-muted">Information security management</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Template View Modal -->
+<div class="modal fade" id="templateModal" tabindex="-1" aria-labelledby="templateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="templateModalLabel">Compliance Template Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Template Information</h6>
+                        <table class="table table-sm">
+                            <tr>
+                                <th>Name:</th>
+                                <td id="templateName"></td>
+                            </tr>
+                            <tr>
+                                <th>Regulation:</th>
+                                <td id="templateRegulation"></td>
+                            </tr>
+                            <tr>
+                                <th>Created By:</th>
+                                <td id="templateCreator"></td>
+                            </tr>
+                            <tr>
+                                <th>Created On:</th>
+                                <td id="templateDate"></td>
+                            </tr>
+                            <tr>
+                                <th>Status:</th>
+                                <td id="templateStatus"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Required Fields</h6>
+                        <div id="requiredFields" class="list-group"></div>
+                    </div>
+                </div>
+                
+                <div class="mt-3">
+                    <h6>Description</h6>
+                    <p id="templateDescription" class="border rounded p-2"></p>
+                </div>
+                
+                <div class="mt-3">
+                    <h6>Template Preview</h6>
+                    <div id="templatePreview" class="border rounded p-2 bg-light">
+                        <p class="text-muted text-center">Template preview would be shown here.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="#" class="btn btn-primary" id="downloadTemplate">
+                    <i class="fas fa-download"></i> Download Template
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle template view buttons
+        const viewButtons = document.querySelectorAll('.view-template');
+        viewButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const templateId = this.getAttribute('data-template-id');
+                const row = this.closest('tr');
+                
+                // In a real implementation, you would fetch the template data from the server
+                // For this example, we'll use the data from the table row
+                const templateData = {
+                    id: templateId,
+                    name: row.querySelector('td:first-child strong').textContent,
+                    description: row.querySelector('td:first-child small') ? row.querySelector('td:first-child small').textContent : 'No description provided.',
+                    regulation_type: row.querySelector('td:nth-child(2)').textContent,
+                    creator: row.querySelector('td:nth-child(3)').textContent,
+                    created_at: row.querySelector('td:nth-child(4)').textContent,
+                    is_active: row.querySelector('.badge').classList.contains('bg-success'),
+                    required_fields: ['Company Name', 'Document Purpose', 'Data Controller', 'Processing Purpose', 'Legal Basis', 'Retention Period']
+                };
+                
+                // Populate modal
+                document.getElementById('templateName').textContent = templateData.name;
+                document.getElementById('templateRegulation').textContent = templateData.regulation_type;
+                document.getElementById('templateCreator').textContent = templateData.creator;
+                document.getElementById('templateDate').textContent = templateData.created_at;
+                
+                const templateStatus = document.getElementById('templateStatus');
+                if (templateData.is_active) {
+                    templateStatus.innerHTML = '<span class="badge bg-success">Active</span>';
+                } else {
+                    templateStatus.innerHTML = '<span class="badge bg-secondary">Inactive</span>';
+                }
+                
+                document.getElementById('templateDescription').textContent = templateData.description;
+                
+                // Populate required fields
+                const requiredFieldsContainer = document.getElementById('requiredFields');
+                requiredFieldsContainer.innerHTML = '';
+                templateData.required_fields.forEach(field => {
+                    const fieldElement = document.createElement('div');
+                    fieldElement.className = 'list-group-item';
+                    fieldElement.innerHTML = `<i class="fas fa-check-circle text-success me-2"></i> ${field}`;
+                    requiredFieldsContainer.appendChild(fieldElement);
+                });
+                
+                // Update download link
+                document.getElementById('downloadTemplate').href = `/download_template/${templateId}`;
+                
+                // Show modal
+                const modal = new bootstrap.Modal(document.getElementById('templateModal'));
+                modal.show();
+            });
+        });
+        
+        // Handle template status toggle
+        const toggleButtons = document.querySelectorAll('.toggle-status');
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const templateId = this.getAttribute('data-template-id');
+                const isActive = this.getAttribute('data-status') === 'True';
+                
+                // In a real implementation, you would send an AJAX request to update the status
+                // For this example, we'll just show an alert
+                alert(`In a production environment, this would ${isActive ? 'deactivate' : 'activate'} the template with ID ${templateId}.`);
+            });
+        });
+    });
+</script>
+{% endblock %}

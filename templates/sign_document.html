@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Document{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-signature"></i> Sign Document: {{ document.filename }}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>Document Information</h5>
+                            <table class="table table-sm">
+                                <tr>
+                                    <th>Filename:</th>
+                                    <td>{{ document.filename }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Uploaded by:</th>
+                                    <td>{{ document.owner.email }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Upload date:</th>
+                                    <td>{{ document.upload_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>File size:</th>
+                                    <td>{{ document.filesize }} bytes</td>
+                                </tr>
+                                <tr>
+                                    <th>SHA256 Hash:</th>
+                                    <td><code>{{ document.sha256_hash }}</code></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Existing Signatures</h5>
+                            {% if signatures %}
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Signer</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for signature in signatures %}
+                                            <tr>
+                                                <td>{{ signature.signer.email }}</td>
+                                                <td>{{ signature.signature_timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                                <td>
+                                                    {% if signature.is_valid %}
+                                                        <span class="badge bg-success">Valid</span>
+                                                    {% else %}
+                                                        <span class="badge bg-danger">Invalid</span>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <div class="alert alert-info">
+                                    No signatures have been added to this document yet.
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <h5 class="mb-3">Add Your Signature</h5>
+                    <div class="alert alert-info mb-3">
+                        <h6 class="alert-heading"><i class="fas fa-shield-alt"></i> Secure Digital Signature</h6>
+                        <p class="mb-0">Your signature will be secured with RSA cryptography, providing legal validity and tamper protection. The document will be digitally signed with your private key and can be verified using your public key.</p>
+                    </div>
+                    <form method="POST" action="{{ url_for('sign_document', document_id=document.id) }}">
+                        <div class="card mb-4 border-primary">
+                            <div class="card-header bg-primary text-white">
+                                <h6 class="mb-0"><i class="fas fa-key"></i> Cryptographic Signature</h6>
+                            </div>
+                            <div class="card-body">
+                                <p>By signing this document, you will:</p>
+                                <ul>
+                                    <li>Create a unique cryptographic signature using your private RSA key</li>
+                                    <li>Confirm your identity as the signer</li>
+                                    <li>Provide tamper-evident protection for the document</li>
+                                </ul>
+                                <p class="mb-0">This digital signature is legally binding and complies with electronic signature regulations.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="confirmSignature" required>
+                            <label class="form-check-label" for="confirmSignature">
+                                I, {{ current_user.name }} ({{ current_user.email }}), hereby confirm that I am digitally signing this document on {{ datetime.now().strftime('%Y-%m-%d') }} using my secure cryptographic key.
+                            </label>
+                        </div>
+                        <input type="hidden" name="signature_data" id="signatureData" value="cryptographic_only">
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('documents_list') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back to Documents
+                            </a>
+                            <button type="submit" class="btn btn-primary" id="submitSignature">
+                                <i class="fas fa-signature"></i> Sign Document
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Simple form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const confirmCheckbox = document.getElementById('confirmSignature');
+            if (!confirmCheckbox.checked) {
+                e.preventDefault();
+                alert('Please confirm that you are signing this document.');
+            }
+        });
+    });
+</script>
+{% endblock %}

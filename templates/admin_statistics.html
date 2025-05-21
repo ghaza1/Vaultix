@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+
+{% block title %}System Statistics{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">System Statistics</h1>
+    
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-users"></i> User Statistics</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h3 class="display-4">{{ total_users }}</h3>
+                                    <p class="mb-0">Total Users</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-success text-white">
+                                <div class="card-body text-center">
+                                    <h3 class="display-4">{{ approved_users }}</h3>
+                                    <p class="mb-0">Approved Users</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-warning">
+                                <div class="card-body text-center">
+                                    <h3 class="display-4">{{ pending_users }}</h3>
+                                    <p class="mb-0">Pending Users</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-danger text-white">
+                                <div class="card-body text-center">
+                                    <h3 class="display-4">{{ rejected_users }}</h3>
+                                    <p class="mb-0">Rejected Users</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-file-alt"></i> Document Statistics</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h3 class="display-4">{{ total_documents }}</h3>
+                                    <p class="mb-0">Total Documents</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-success text-white">
+                                <div class="card-body text-center">
+                                    <h3 class="display-4">{{ approved_documents }}</h3>
+                                    <p class="mb-0">Approved Documents</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-warning">
+                                <div class="card-body text-center">
+                                    <h3 class="display-4">{{ pending_documents }}</h3>
+                                    <p class="mb-0">Pending Documents</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-danger text-white">
+                                <div class="card-body text-center">
+                                    <h3 class="display-4">{{ rejected_documents }}</h3>
+                                    <p class="mb-0">Rejected Documents</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-history"></i> Recent Audit Logs</h5>
+        </div>
+        <div class="card-body">
+            {% if recent_logs %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Action</th>
+                                <th>User</th>
+                                <th>IP Address</th>
+                                <th>Status</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in recent_logs %}
+                            <tr>
+                                <td>{{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                <td>{{ log.action_type }}</td>
+                                <td>
+                                    {% if log.user_id %}
+                                        {% if log.user_id in log_users %}
+                                            {{ log_users[log.user_id].email }}
+                                        {% else %}
+                                            User ID: {{ log.user_id }} (deleted)
+                                        {% endif %}
+                                    {% else %}
+                                        Anonymous
+                                    {% endif %}
+                                </td>
+                                <td>{{ log.ip_address }}</td>
+                                <td>
+                                    {% if log.status_code %}
+                                        {% if log.status_code >= 200 and log.status_code < 300 %}
+                                            <span class="badge bg-success">{{ log.status_code }}</span>
+                                        {% elif log.status_code >= 400 and log.status_code < 500 %}
+                                            <span class="badge bg-warning">{{ log.status_code }}</span>
+                                        {% elif log.status_code >= 500 %}
+                                            <span class="badge bg-danger">{{ log.status_code }}</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ log.status_code }}</span>
+                                        {% endif %}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if log.details %}
+                                        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#details{{ log.id }}" aria-expanded="false">
+                                            View Details
+                                        </button>
+                                        <div class="collapse mt-2" id="details{{ log.id }}">
+                                            <div class="card card-body">
+                                                <pre class="mb-0"><code>{{ log.details|tojson(indent=2) }}</code></pre>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> No audit logs available.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="mt-4">
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Admin Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}

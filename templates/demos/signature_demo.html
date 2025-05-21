@@ -1,0 +1,461 @@
+{% extends "base.html" %}
+{% block title %}Digital Signature Demo - Vaultix{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="p-5 rounded-4 shadow-sm" style="background: var(--color-header-bg-gradient)">
+                <div class="container-fluid py-3">
+                    <h1 class="display-4 fw-bold text-white">Digital Signature Demo</h1>
+                    <p class="col-md-10 fs-5 text-white opacity-90">
+                        Experience our secure digital signature process with this interactive demo.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <div class="alert alert-info" role="alert">
+                        <i class="fas fa-info-circle me-2"></i> This is a demonstration of how digital signatures work in Vaultix. No actual documents are uploaded or stored during this demo.
+                    </div>
+                    
+                    <div id="demo-steps">
+                        <!-- Step 1: Document Selection -->
+                        <div id="step1" class="demo-step active">
+                            <h3 class="mb-4"><span class="badge bg-primary me-2">Step 1</span> Select a Document</h3>
+                            <p class="mb-4">Choose a sample document to sign or upload your own test document.</p>
+                            
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Sample Documents</h5>
+                                            <div class="list-group list-group-flush">
+                                                <button class="list-group-item list-group-item-action d-flex align-items-center sample-doc" data-doc-name="Contract Agreement">
+                                                    <i class="fas fa-file-contract text-primary me-3"></i>
+                                                    <div>
+                                                        <strong>Contract Agreement</strong>
+                                                        <div class="small text-muted">PDF, 250 KB</div>
+                                                    </div>
+                                                </button>
+                                                <button class="list-group-item list-group-item-action d-flex align-items-center sample-doc" data-doc-name="Non-Disclosure Agreement">
+                                                    <i class="fas fa-file-alt text-primary me-3"></i>
+                                                    <div>
+                                                        <strong>Non-Disclosure Agreement</strong>
+                                                        <div class="small text-muted">PDF, 175 KB</div>
+                                                    </div>
+                                                </button>
+                                                <button class="list-group-item list-group-item-action d-flex align-items-center sample-doc" data-doc-name="Financial Statement">
+                                                    <i class="fas fa-file-invoice-dollar text-primary me-3"></i>
+                                                    <div>
+                                                        <strong>Financial Statement</strong>
+                                                        <div class="small text-muted">PDF, 320 KB</div>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Upload Your Own</h5>
+                                            <p class="card-text">Upload a test document from your computer.</p>
+                                            <div class="mb-3">
+                                                <label for="demoFileUpload" class="form-label">Select a file</label>
+                                                <input class="form-control" type="file" id="demoFileUpload">
+                                                <div class="form-text">For demo purposes only. File will not be stored.</div>
+                                            </div>
+                                            <button class="btn btn-primary" id="uploadDemoDoc">Upload</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-outline-secondary" disabled>Previous</button>
+                                <button class="btn btn-primary next-step" data-next="step2" disabled id="step1Next">Next</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2: Document Preview -->
+                        <div id="step2" class="demo-step">
+                            <h3 class="mb-4"><span class="badge bg-primary me-2">Step 2</span> Review Document</h3>
+                            <p class="mb-4">Review the document before applying your digital signature.</p>
+                            
+                            <div class="card mb-4 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <i class="fas fa-file-alt fa-2x text-primary me-3"></i>
+                                        <div>
+                                            <h5 class="mb-0" id="previewDocName">Document Name</h5>
+                                            <p class="text-muted mb-0" id="previewDocDetails">PDF, 250 KB</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="document-preview p-3 bg-light rounded mb-3" style="height: 300px; overflow-y: auto;">
+                                        <div class="text-center py-5">
+                                            <i class="fas fa-file-alt fa-4x text-muted mb-3"></i>
+                                            <h5>Document Preview</h5>
+                                            <p class="text-muted">This is a simulated preview of the document content.</p>
+                                            <p class="text-muted">In a real application, you would see the actual document content here.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="confirmReview">
+                                        <label class="form-check-label" for="confirmReview">
+                                            I confirm that I have reviewed this document and am ready to sign it.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-outline-secondary prev-step" data-prev="step1">Previous</button>
+                                <button class="btn btn-primary next-step" data-next="step3" disabled id="step2Next">Next</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3: Signature Creation -->
+                        <div id="step3" class="demo-step">
+                            <h3 class="mb-4"><span class="badge bg-primary me-2">Step 3</span> Create Digital Signature</h3>
+                            <p class="mb-4">Authenticate your identity and create a digital signature for the document.</p>
+                            
+                            <div class="card mb-4 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="mb-3">Authentication</h5>
+                                    <p>In a real application, you would authenticate using your account credentials and possibly two-factor authentication.</p>
+                                    
+                                    <div class="mb-4">
+                                        <label for="demoSignerName" class="form-label">Your Name</label>
+                                        <input type="text" class="form-control" id="demoSignerName" placeholder="Enter your name">
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label for="demoSignerEmail" class="form-label">Your Email</label>
+                                        <input type="email" class="form-control" id="demoSignerEmail" placeholder="Enter your email">
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label class="form-label">Signature Type</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="signatureType" id="typeCryptographic" checked>
+                                            <label class="form-check-label" for="typeCryptographic">
+                                                <strong>Cryptographic Signature</strong> - Secure digital signature using RSA cryptography
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="signatureType" id="typeDrawn">
+                                            <label class="form-check-label" for="typeDrawn">
+                                                <strong>Drawn Signature</strong> - Handwritten signature captured digitally
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="drawnSignatureArea" class="mb-4 d-none">
+                                        <label class="form-label">Draw Your Signature</label>
+                                        <div class="border rounded p-3 text-center" style="height: 150px;">
+                                            <p class="text-muted">Signature drawing pad would appear here in a real application.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-outline-secondary prev-step" data-prev="step2">Previous</button>
+                                <button class="btn btn-primary next-step" data-next="step4" id="step3Next">Sign Document</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 4: Signature Confirmation -->
+                        <div id="step4" class="demo-step">
+                            <h3 class="mb-4"><span class="badge bg-success me-2">Complete</span> Signature Confirmed</h3>
+                            
+                            <div class="card mb-4 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <div class="text-center mb-4">
+                                        <div class="rounded-circle bg-success d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                                            <i class="fas fa-check fa-3x text-white"></i>
+                                        </div>
+                                        <h4>Document Successfully Signed!</h4>
+                                        <p class="text-muted">Your digital signature has been applied to the document.</p>
+                                    </div>
+                                    
+                                    <div class="card bg-light border-0 mb-4">
+                                        <div class="card-body">
+                                            <h5>Signature Details</h5>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <p><strong>Document:</strong> <span id="signedDocName">Document Name</span></p>
+                                                    <p><strong>Signer:</strong> <span id="signerNameConfirm">John Doe</span></p>
+                                                    <p><strong>Email:</strong> <span id="signerEmailConfirm">john@example.com</span></p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p><strong>Signature Type:</strong> <span id="signatureTypeConfirm">Cryptographic</span></p>
+                                                    <p><strong>Timestamp:</strong> <span id="signatureTimestamp">2025-05-19 14:22:24</span></p>
+                                                    <p><strong>Signature ID:</strong> <span id="signatureId">SIG-25052019-1422</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="alert alert-success d-flex align-items-center" role="alert">
+                                        <i class="fas fa-shield-alt fa-2x me-3"></i>
+                                        <div>
+                                            <h5 class="alert-heading">Cryptographically Secure</h5>
+                                            <p class="mb-0">This signature is protected by RSA-2048 cryptography and is tamper-evident. Any changes to the document would invalidate the signature.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-outline-secondary" id="restartDemo">Start Over</button>
+                                <a href="{{ url_for('verification_demo') }}" class="btn btn-primary">Try Verification Demo</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header" style="background: var(--color-primary); color: white; border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;">
+                    <h4 class="mb-0">How Digital Signatures Work</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h5><i class="fas fa-fingerprint text-primary me-2"></i>Unique Identity</h5>
+                        <p>Each signer has a unique private key that is used to create signatures that can only come from them.</p>
+                    </div>
+                    <div class="mb-4">
+                        <h5><i class="fas fa-lock text-primary me-2"></i>Document Integrity</h5>
+                        <p>The signature is mathematically linked to the document content, so any changes would invalidate the signature.</p>
+                    </div>
+                    <div class="mb-4">
+                        <h5><i class="fas fa-shield-alt text-primary me-2"></i>Tamper Evidence</h5>
+                        <p>The cryptographic nature of the signature makes it impossible to forge or modify without detection.</p>
+                    </div>
+                    <div class="mb-4">
+                        <h5><i class="fas fa-history text-primary me-2"></i>Audit Trail</h5>
+                        <p>Each signature includes metadata like timestamp and signer information for a complete record.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm border-0">
+                <div class="card-header" style="background: var(--color-secondary); color: white; border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;">
+                    <h4 class="mb-0">Demo Progress</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush" id="progressTracker">
+                        <li class="list-group-item border-0 d-flex align-items-center active-step" id="progressStep1">
+                            <div class="step-indicator bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px;">
+                                <span>1</span>
+                            </div>
+                            <span>Select Document</span>
+                        </li>
+                        <li class="list-group-item border-0 d-flex align-items-center" id="progressStep2">
+                            <div class="step-indicator bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px;">
+                                <span>2</span>
+                            </div>
+                            <span>Review Document</span>
+                        </li>
+                        <li class="list-group-item border-0 d-flex align-items-center" id="progressStep3">
+                            <div class="step-indicator bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px;">
+                                <span>3</span>
+                            </div>
+                            <span>Create Signature</span>
+                        </li>
+                        <li class="list-group-item border-0 d-flex align-items-center" id="progressStep4">
+                            <div class="step-indicator bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px;">
+                                <span>4</span>
+                            </div>
+                            <span>Confirmation</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .demo-step {
+        display: none;
+    }
+    .demo-step.active {
+        display: block;
+    }
+    .active-step .step-indicator {
+        background-color: var(--color-primary) !important;
+    }
+</style>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Variables
+        let selectedDocName = '';
+        
+        // Step navigation
+        const nextButtons = document.querySelectorAll('.next-step');
+        const prevButtons = document.querySelectorAll('.prev-step');
+        const restartButton = document.getElementById('restartDemo');
+        
+        // Step 1: Document Selection
+        const sampleDocs = document.querySelectorAll('.sample-doc');
+        const uploadButton = document.getElementById('uploadDemoDoc');
+        const fileInput = document.getElementById('demoFileUpload');
+        const step1Next = document.getElementById('step1Next');
+        
+        // Step 2: Document Review
+        const confirmReview = document.getElementById('confirmReview');
+        const step2Next = document.getElementById('step2Next');
+        const previewDocName = document.getElementById('previewDocName');
+        const previewDocDetails = document.getElementById('previewDocDetails');
+        
+        // Step 3: Signature Creation
+        const signerName = document.getElementById('demoSignerName');
+        const signerEmail = document.getElementById('demoSignerEmail');
+        const typeCryptographic = document.getElementById('typeCryptographic');
+        const typeDrawn = document.getElementById('typeDrawn');
+        const drawnSignatureArea = document.getElementById('drawnSignatureArea');
+        
+        // Step 4: Confirmation
+        const signedDocName = document.getElementById('signedDocName');
+        const signerNameConfirm = document.getElementById('signerNameConfirm');
+        const signerEmailConfirm = document.getElementById('signerEmailConfirm');
+        const signatureTypeConfirm = document.getElementById('signatureTypeConfirm');
+        const signatureTimestamp = document.getElementById('signatureTimestamp');
+        
+        // Progress tracker
+        const progressSteps = document.querySelectorAll('#progressTracker li');
+        
+        // Event Listeners
+        
+        // Sample document selection
+        sampleDocs.forEach(doc => {
+            doc.addEventListener('click', function() {
+                sampleDocs.forEach(d => d.classList.remove('active', 'bg-light'));
+                this.classList.add('active', 'bg-light');
+                selectedDocName = this.getAttribute('data-doc-name');
+                step1Next.disabled = false;
+            });
+        });
+        
+        // File upload
+        uploadButton.addEventListener('click', function() {
+            if (fileInput.files.length > 0) {
+                selectedDocName = fileInput.files[0].name;
+                sampleDocs.forEach(d => d.classList.remove('active', 'bg-light'));
+                step1Next.disabled = false;
+            }
+        });
+        
+        // Document review confirmation
+        confirmReview.addEventListener('change', function() {
+            step2Next.disabled = !this.checked;
+        });
+        
+        // Signature type selection
+        typeDrawn.addEventListener('change', function() {
+            if (this.checked) {
+                drawnSignatureArea.classList.remove('d-none');
+            }
+        });
+        
+        typeCryptographic.addEventListener('change', function() {
+            if (this.checked) {
+                drawnSignatureArea.classList.add('d-none');
+            }
+        });
+        
+        // Next step navigation
+        nextButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const currentStep = this.closest('.demo-step');
+                const nextStepId = this.getAttribute('data-next');
+                const nextStep = document.getElementById(nextStepId);
+                const currentStepNumber = parseInt(nextStepId.replace('step', '')) - 1;
+                const nextStepNumber = parseInt(nextStepId.replace('step', ''));
+                
+                // Update progress tracker
+                progressSteps.forEach(step => step.classList.remove('active-step'));
+                document.getElementById('progressStep' + nextStepNumber).classList.add('active-step');
+                
+                // Handle step-specific logic
+                if (nextStepId === 'step2') {
+                    previewDocName.textContent = selectedDocName;
+                    previewDocDetails.textContent = 'PDF, ' + (Math.floor(Math.random() * 400) + 100) + ' KB';
+                }
+                
+                if (nextStepId === 'step4') {
+                    signedDocName.textContent = selectedDocName;
+                    signerNameConfirm.textContent = signerName.value || 'Demo User';
+                    signerEmailConfirm.textContent = signerEmail.value || 'demo@example.com';
+                    signatureTypeConfirm.textContent = typeCryptographic.checked ? 'Cryptographic' : 'Drawn';
+                    signatureTimestamp.textContent = new Date().toLocaleString();
+                }
+                
+                // Show next step
+                currentStep.classList.remove('active');
+                nextStep.classList.add('active');
+            });
+        });
+        
+        // Previous step navigation
+        prevButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const currentStep = this.closest('.demo-step');
+                const prevStepId = this.getAttribute('data-prev');
+                const prevStep = document.getElementById(prevStepId);
+                const currentStepNumber = parseInt(currentStep.id.replace('step', ''));
+                const prevStepNumber = parseInt(prevStepId.replace('step', ''));
+                
+                // Update progress tracker
+                progressSteps.forEach(step => step.classList.remove('active-step'));
+                document.getElementById('progressStep' + prevStepNumber).classList.add('active-step');
+                
+                // Show previous step
+                currentStep.classList.remove('active');
+                prevStep.classList.add('active');
+            });
+        });
+        
+        // Restart demo
+        restartButton.addEventListener('click', function() {
+            // Reset all form fields
+            document.querySelectorAll('input[type="text"], input[type="email"]').forEach(input => {
+                input.value = '';
+            });
+            
+            document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(input => {
+                input.checked = input.id === 'typeCryptographic';
+            });
+            
+            sampleDocs.forEach(doc => doc.classList.remove('active', 'bg-light'));
+            fileInput.value = '';
+            selectedDocName = '';
+            step1Next.disabled = true;
+            
+            // Reset progress tracker
+            progressSteps.forEach(step => step.classList.remove('active-step'));
+            document.getElementById('progressStep1').classList.add('active-step');
+            
+            // Show first step
+            document.querySelectorAll('.demo-step').forEach(step => step.classList.remove('active'));
+            document.getElementById('step1').classList.add('active');
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "error_base.html" %}
+
+{% block title %}403 Forbidden{% endblock %}
+
+{% block error_icon %}<i class="fas fa-ban"></i>{% endblock %}
+
+{% block error_code %}403{% endblock %}
+
+{% block error_message %}Forbidden{% endblock %}
+
+{% block error_description %}
+You don't have permission to access this resource.
+Please contact your administrator if you believe this is an error.
+{% endblock %}

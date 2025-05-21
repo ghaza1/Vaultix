@@ -1,0 +1,14 @@
+{% extends "error_base.html" %}
+
+{% block title %}400 Bad Request{% endblock %}
+
+{% block error_icon %}<i class="fas fa-exclamation-triangle"></i>{% endblock %}
+
+{% block error_code %}400{% endblock %}
+
+{% block error_message %}Bad Request{% endblock %}
+
+{% block error_description %}
+The server could not understand your request due to invalid syntax or missing parameters.
+Please check your request and try again.
+{% endblock %}

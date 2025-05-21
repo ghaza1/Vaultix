@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Sign Up - Vaultix{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-7 col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white text-center py-3">
+                <h2 class="mb-0">Create Your Vaultix Account</h2>
+            </div>
+            <div class="card-body p-4 p-md-5">
+                <form method="POST" action="{{ url_for('signup') }}">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Full Name</label>
+                        {# Pre-fill name if form is re-rendered due to an error #}
+                        <input type="text" class="form-control form-control-lg" id="name" name="name" value="{{ name if name else '' }}" required autocomplete="name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        {# Pre-fill email if form is re-rendered due to an error #}
+                        <input type="email" class="form-control form-control-lg" id="email" name="email" value="{{ email if email else '' }}" required autocomplete="email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control form-control-lg" id="password" name="password" required minlength="8" autocomplete="new-password" aria-describedby="passwordHelpBlock">
+                        <div id="passwordHelpBlock" class="form-text mt-2">
+                            Your password must be at least 8 characters long and include all of the following:
+                            <ul class="mt-1 mb-0">
+                                <li>At least one uppercase letter (A-Z)</li>
+                                <li>At least one lowercase letter (a-z)</li>
+                                <li>At least one digit (0-9)</li>
+                                <li>At least one special character (e.g., !@#$%^&*)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="confirm_password" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control form-control-lg" id="confirm_password" name="confirm_password" required autocomplete="new-password">
+                    </div>
+                    <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+                    </div>
+                </form>
+                <hr class="my-4">
+                <p class="text-center">Already have an account? <a href="{{ url_for('login') }}">Log In</a></p>
+                <p class="text-center mt-3 text-muted small">Or sign up using your corporate account:</p>
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('okta_authlib_login') }}" class="btn btn-info text-white btn-lg"> 
+                        <svg width="24" height="24" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px; vertical-align: middle;">
+                            <circle cx="60" cy="60" r="50" fill="currentColor"/>
+                        </svg>
+                        Sign Up with Okta/Auth0
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

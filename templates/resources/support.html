@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+{% block title %}Support - Vaultix{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="p-5 rounded-4 shadow-sm" style="background: var(--color-header-bg-gradient)">
+                <div class="container-fluid py-3">
+                    <h1 class="display-4 fw-bold text-white">Support</h1>
+                    <p class="col-md-10 fs-5 text-white opacity-90">
+                        Get help with any issues or questions you have about Vaultix.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <h2 class="mb-4">Contact Support</h2>
+                    
+                    <div class="alert alert-info" role="alert">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-info-circle fa-2x me-3"></i>
+                            </div>
+                            <div>
+                                <h5 class="alert-heading">Before Contacting Support</h5>
+                                <p class="mb-0">Please check our <a href="{{ url_for('resources.knowledge_base') }}" class="alert-link">Knowledge Base</a> and <a href="{{ url_for('resources.documentation') }}" class="alert-link">Documentation</a> to see if your question has already been answered.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <form class="mt-4">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" placeholder="Your name">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" placeholder="Your email address">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject</label>
+                            <input type="text" class="form-control" id="subject" placeholder="Brief description of your issue">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select class="form-select" id="category">
+                                <option selected>Select a category</option>
+                                <option value="account">Account Issues</option>
+                                <option value="documents">Document Management</option>
+                                <option value="signatures">Digital Signatures</option>
+                                <option value="security">Security & Access</option>
+                                <option value="billing">Billing & Subscription</option>
+                                <option value="technical">Technical Problems</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="priority" class="form-label">Priority</label>
+                            <select class="form-select" id="priority">
+                                <option value="low">Low - General question or feedback</option>
+                                <option value="medium" selected>Medium - Issue affecting my work</option>
+                                <option value="high">High - Critical issue preventing work</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea class="form-control" id="message" rows="5" placeholder="Please describe your issue in detail, including any error messages you've encountered"></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="attachments" class="form-label">Attachments (Optional)</label>
+                            <input class="form-control" type="file" id="attachments" multiple>
+                            <div class="form-text">You can attach screenshots or relevant files (max 10MB total)</div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="submit" class="btn btn-primary">Submit Support Request</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h2 class="mb-4">Frequently Asked Support Questions</h2>
+                    
+                    <div class="accordion" id="supportFAQ">
+                        <div class="accordion-item border-0 mb-3 shadow-sm">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    What are your support hours?
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#supportFAQ">
+                                <div class="accordion-body">
+                                    <p>Our standard support hours are Monday through Friday, 9:00 AM to 6:00 PM Eastern Time. Premium support plans include extended hours and weekend coverage.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item border-0 mb-3 shadow-sm">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    What is your typical response time?
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#supportFAQ">
+                                <div class="accordion-body">
+                                    <p>Our response times vary based on the priority of the issue:</p>
+                                    <ul>
+                                        <li><strong>High Priority:</strong> 1-2 business hours</li>
+                                        <li><strong>Medium Priority:</strong> 4-8 business hours</li>
+                                        <li><strong>Low Priority:</strong> 1-2 business days</li>
+                                    </ul>
+                                    <p>Premium support plans have accelerated response times for all priority levels.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item border-0 mb-3 shadow-sm">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    Do you offer phone support?
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#supportFAQ">
+                                <div class="accordion-body">
+                                    <p>Phone support is available for Premium and Enterprise plan customers. If you're on one of these plans, you can find your dedicated support number in your account dashboard. Standard plan customers receive support via email and our support portal.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item border-0 shadow-sm">
+                            <h2 class="accordion-header" id="headingFour">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                    How do I track my support request?
+                                </button>
+                            </h2>
+                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#supportFAQ">
+                                <div class="accordion-body">
+                                    <p>When you submit a support request, you'll receive a confirmation email with a unique ticket number. You can use this number to track the status of your request through our support portal. You'll also receive email updates whenever there's activity on your ticket.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header" style="background: var(--color-primary); color: white; border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;">
+                    <h4 class="mb-0">Support Options</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item border-0 d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-envelope text-primary fa-2x me-3"></i>
+                            </div>
+                            <div>
+                                <h5>Email Support</h5>
+                                <p class="mb-0">Send us an email at <a href="mailto:support@vaultix.com">support@vaultix.com</a></p>
+                            </div>
+                        </li>
+                        <li class="list-group-item border-0 d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-comments text-primary fa-2x me-3"></i>
+                            </div>
+                            <div>
+                                <h5>Live Chat</h5>
+                                <p class="mb-0">Available Monday-Friday, 9 AM - 6 PM ET</p>
+                                <a href="#" class="btn btn-sm btn-outline-primary mt-2">Start Chat</a>
+                            </div>
+                        </li>
+                        <li class="list-group-item border-0 d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-phone-alt text-primary fa-2x me-3"></i>
+                            </div>
+                            <div>
+                                <h5>Phone Support</h5>
+                                <p class="mb-0">Premium & Enterprise plans only</p>
+                                <p class="mb-0"><a href="#">Upgrade your plan</a> for phone support</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header" style="background: var(--color-secondary); color: white; border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;">
+                    <h4 class="mb-0">Self-Help Resources</h4>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <a href="{{ url_for('resources.documentation') }}" class="list-group-item list-group-item-action border-0 d-flex align-items-center">
+                            <i class="fas fa-book text-primary me-3"></i>
+                            <span>Documentation</span>
+                        </a>
+                        <a href="{{ url_for('resources.knowledge_base') }}" class="list-group-item list-group-item-action border-0 d-flex align-items-center">
+                            <i class="fas fa-question-circle text-primary me-3"></i>
+                            <span>Knowledge Base</span>
+                        </a>
+                        <a href="{{ url_for('resources.tutorials') }}" class="list-group-item list-group-item-action border-0 d-flex align-items-center">
+                            <i class="fas fa-graduation-cap text-primary me-3"></i>
+                            <span>Tutorials</span>
+                        </a>
+                        <a href="{{ url_for('resources.api_reference') }}" class="list-group-item list-group-item-action border-0 d-flex align-items-center">
+                            <i class="fas fa-code text-primary me-3"></i>
+                            <span>API Reference</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm border-0">
+                <div class="card-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;">
+                    <h4 class="mb-0">Support Status</h4>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="flex-shrink-0">
+                            <span class="badge bg-success rounded-circle p-2"><i class="fas fa-check"></i></span>
+                        </div>
+                        <div class="ms-3">
+                            <h5 class="mb-0">All Systems Operational</h5>
+                        </div>
+                    </div>
+                    <p>Current support response time: <strong>~4 hours</strong></p>
+                    <a href="#" class="btn btn-outline-success w-100">View System Status</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
