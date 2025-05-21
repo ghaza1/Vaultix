@@ -425,4 +425,7 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
         <img src="https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin&logoColor=white"/>
     </a>
 </p>  
+<p align="center">
+    <img src="https://capsule-render.vercel.app/api?type=waving&height=150&color=gradient&section=footer" alt="Footer">
+</p>  
 
